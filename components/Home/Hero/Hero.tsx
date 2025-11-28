@@ -90,76 +90,76 @@ const Hero = () => {
     };
 
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950">
+            {/* Fixed Background Layer - Stays constant */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950" />
+
+            {/* Random Animated Shapes - Fixed Background */}
+            <div className="absolute inset-0 overflow-hidden">
+                {randomShapes.map((shape) => (
+                    <div
+                        key={shape.id}
+                        className={`absolute ${
+                            shape.type === 'circle' ? 'rounded-full' : 'magicpattern animate-blob'
+                        }`}
+                        style={{
+                            width: `${shape.size}px`,
+                            height: `${shape.size}px`,
+                            left: `${shape.left}%`,
+                            top: `${shape.top}%`,
+                            opacity: shape.opacity,
+                            filter: 'blur(40px)',
+                            animation: `float-random ${shape.duration}s ease-in-out infinite`,
+                            animationDelay: `${shape.delay}s`
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Floating Icon Elements - Fixed Background */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {floatingIcons.map((item, i) => {
+                    const { Icon, color } = item;
+                    const iconLeft = (i * 7.3) % 100;
+                    const iconTop = (i * 13.7) % 100;
+                    const iconSize = 24 + (i % 5) * 4;
+                    const floatDuration = 10 + (i % 6) * 2.5;
+                    const floatDelay = (i % 5);
+                    
+                    return (
+                        <div
+                            key={i}
+                            className="absolute"
+                            style={{
+                                left: `${iconLeft}%`,
+                                top: `${iconTop}%`,
+                                animation: `float ${floatDuration}s ease-in-out infinite`,
+                                animationDelay: `${floatDelay}s`
+                            }}
+                        >
+                            <Icon className={`${color} opacity-30`} size={iconSize} />
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Slides Container - Only content transitions */}
             <div className="relative w-full h-full">
                 {slides.map((slide, index) => (
                     <div
                         key={index}
-                        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
                             index === currentSlide
-                                ? 'opacity-100 scale-100'
-                                : 'opacity-0 scale-105'
+                                ? 'opacity-100 z-10'
+                                : 'opacity-0 z-0 pointer-events-none'
                         }`}
                     >
-                        {/* Dark Background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950" />
-
-                        {/* Random Animated Shapes */}
-                        <div className="absolute inset-0 overflow-hidden">
-                            {randomShapes.map((shape) => (
-                                <div
-                                    key={shape.id}
-                                    className={`absolute ${
-                                        shape.type === 'circle' ? 'rounded-full' : 'magicpattern animate-blob'
-                                    }`}
-                                    style={{
-                                        width: `${shape.size}px`,
-                                        height: `${shape.size}px`,
-                                        left: `${shape.left}%`,
-                                        top: `${shape.top}%`,
-                                        
-                                        opacity: shape.opacity,
-                                        filter: 'blur(40px)',
-                                        animation: `float-random ${shape.duration}s ease-in-out infinite`,
-                                        animationDelay: `${shape.delay}s`
-                                    }}
-                                />
-                            ))}
-                        </div>
-
-                        {/* Floating Icon Elements */}
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                            {floatingIcons.map((item, i) => {
-                                const { Icon, color } = item;
-                                const iconLeft = (i * 7.3) % 100;
-                                const iconTop = (i * 13.7) % 100;
-                                const iconSize = 24 + (i % 5) * 4;
-                                const floatDuration = 10 + (i % 6) * 2.5;
-                                const floatDelay = (i % 5);
-                                
-                                return (
-                                    <div
-                                        key={i}
-                                        className="absolute"
-                                        style={{
-                                            left: `${iconLeft}%`,
-                                            top: `${iconTop}%`,
-                                            animation: `float ${floatDuration}s ease-in-out infinite`,
-                                            animationDelay: `${floatDelay}s`
-                                        }}
-                                    >
-                                        <Icon className={`${color} opacity-30`} size={iconSize} />
-                                    </div>
-                                );
-                            })}
-                        </div>
-
                         {/* Content - New Layout */}
                         <div className="relative z-10 h-full flex items-center pt-20 md:pt-24 lg:pt-0">
                             <div className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                                     {/* Text Content - Takes 6 columns */}
-                                    <div className={`lg:col-span-6 text-center lg:text-left transition-all duration-1000 delay-300 ${
+                                    <div className={`lg:col-span-6 text-center lg:text-left transition-all duration-700 ${
                                         index === currentSlide
                                             ? 'translate-x-0 opacity-100'
                                             : '-translate-x-10 opacity-0'
@@ -184,7 +184,7 @@ const Hero = () => {
                                     </div>
 
                                     {/* Image Content - Creative Layered Design - Takes 6 columns */}
-                                    <div className={`lg:col-span-6 hidden lg:block transition-all duration-1000 delay-500 ${
+                                    <div className={`lg:col-span-6 hidden lg:block transition-all duration-700 ${
                                         index === currentSlide
                                             ? 'translate-x-0 opacity-100'
                                             : 'translate-x-10 opacity-0'
@@ -192,27 +192,23 @@ const Hero = () => {
                                         <div className="relative h-[500px] lg:h-[600px] w-full">
                                             {/* Main Image Container with 3D Perspective */}
                                             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[85%] h-[85%]">
-                                                {/* Shadow layers for depth */}
-                                                
-                                                
                                                 {/* Main Image */}
                                                 <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-700 border-4 border-white/20">
                                                     <Image
                                                         src={slide.image}
                                                         alt={slide.title}
                                                         fill
+                                                        sizes="(max-width: 1024px) 100vw, 50vw"
                                                         className="object-cover"
                                                         priority={index === 0}
-                                                        quality={95}
+                                                        quality={90}
                                                     />
                                                 </div>
                                             </div>
 
                                             {/* Decorative Elements */}
-                                            
-                                            
                                             {/* Small accent cards */}
-                                            <div className="absolute top-20 right-[-30] w-24 h-24 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 flex items-center justify-center animate-float">
+                                            <div className="absolute top-20 right-[-30px] w-24 h-24 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 flex items-center justify-center animate-float">
                                                 <Star className="text-yellow-400 w-12 h-12" />
                                             </div>
                                             <div className="absolute bottom-20 left-10 w-28 h-28 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 flex items-center justify-center animate-float-delayed">

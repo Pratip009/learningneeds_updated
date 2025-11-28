@@ -43,7 +43,7 @@ const About = () => {
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Welcome to <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-orange-500">Learning Needs</span>
+            Welcome to <span className="sparkle-text text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-orange-500">Learning Needs</span>
           </h1>
         </div>
 

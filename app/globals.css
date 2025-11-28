@@ -53,3 +53,39 @@
 .animate-scroll-vertical {
   animation: scroll-vertical 10s linear infinite;
 }
+
+.sparkle-text {
+  display: inline-block;
+  position: relative;
+  animation: sparkleMain 2s ease-in-out infinite;
+}
+
+.sparkle-text::before,
+.sparkle-text::after {
+  content: '✨';
+  position: absolute;
+  font-size: 0.8em;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle-text::before {
+  top: -0.5em;
+  left: -0.8em;
+  animation-delay: 0s;
+}
+
+.sparkle-text::after {
+  top: -0.5em;
+  right: -0.8em;
+  animation-delay: 1s;
+}
+
+@keyframes sparkleMain {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}

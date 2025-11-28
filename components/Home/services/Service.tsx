@@ -103,7 +103,7 @@ const Services = () => {
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               Our Services
               <br />
-              <span className="text-blue-600">
+              <span className="text-blue-600 sparkle-text">
                 Help You Succeed
               </span>
               <br />

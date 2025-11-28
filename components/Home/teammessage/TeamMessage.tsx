@@ -115,7 +115,7 @@ const TeamMessage = () => {
                                 <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-xl sm:rounded-2xl flex items-center justify-center">
                                     <Tilt>
                                         <Image
-                                            src="/images/brainstorming.png"
+                                            src="/images/teammain.png"
                                             alt="Team Message"
                                             width={220}
                                             height={220}
