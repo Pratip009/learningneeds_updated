@@ -39,7 +39,12 @@ const FounderMessage = () => {
                         <div className="border-l-2 border-rose-300 pl-6 space-y-6">
                             <Quote className="text-rose-300 w-8 h-8" />
 
-                            <p className="text-gray-600 leading-relaxed">
+                            <p className="text-gray-600 leading-relaxed" style={{
+                                textAlign: 'justify',
+                                textJustify: 'inter-word',
+                                hyphens: 'auto',
+                                wordSpacing: 'normal'
+                            }}>
                                 Consulting means different things to different people. For us, it is about being a trusted advisor that helps clients chart and walk the path to sustained success. We are not a solution looking for a problem—we see every project and situation as unique. Our custom-tailored consulting engagements are based on deep listening and decades of experience across industries and issues. The solutions we craft are practical, realistic, and highly effective. We pride ourselves on having a seasoned and multidisciplinary team that can thoughtfully guide, support, and motivate leaders, teachers, and organizations to achieve levels of performance they never have before.
                             </p>
 

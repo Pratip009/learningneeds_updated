@@ -46,17 +46,22 @@ const Feature = () => {
                     </h2>
 
                     <div className="mt-10 mb-6">
-                        <p className="text-sm md:text-base text-black text-opacity-70 leading-7">
-                            Learning Needs is committed to help its clients reach their goals. By providing 
-                            an innovative environment, which makes a difference. Our strong sense of 
-                            identification with client projects means that we are constantly striving to 
-                            provide solutions, even for issues they aren’t yet aware of. To this end, we adopt 
-                            a progressive approach to technology and marketing techniques. This sense of 
-                            identification also means we value and promote seamless interaction with clients’ 
+                        <p className="text-sm md:text-base text-black text-opacity-70 leading-7" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
+                            Learning Needs is committed to help its clients reach their goals. By providing
+                            an innovative environment, which makes a difference. Our strong sense of
+                            identification with client projects means that we are constantly striving to
+                            provide solutions, even for issues they aren’t yet aware of. To this end, we adopt
+                            a progressive approach to technology and marketing techniques. This sense of
+                            identification also means we value and promote seamless interaction with clients’
                             own teams, and ensure the best value is obtained from their budget.
                             <br /><br />
-                            Our long experience at the top of the education and training business means we have 
-                            expertise which reaches across a number of sectors and schools. But we know that 
+                            Our long experience at the top of the education and training business means we have
+                            expertise which reaches across a number of sectors and schools. But we know that
                             things change, and we are constantly striving to adapt and improve.
                         </p>
                     </div>

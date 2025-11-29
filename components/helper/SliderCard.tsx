@@ -12,7 +12,7 @@ type Props = {
 const SliderCard = ({ image, name, designation, review }: Props) => {
   return (
     <div className="group relative bg-white p-4 sm:p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 w-full text-center border border-gray-200 h-full flex flex-col">
-      
+
       {/* Decorative accent (light blue gradient) */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
@@ -45,7 +45,12 @@ const SliderCard = ({ image, name, designation, review }: Props) => {
       </div>
 
       {/* Review Text */}
-      <p className="text-gray-700 text-xs sm:text-sm leading-relaxed italic flex-grow">
+      <p className="text-gray-700 text-xs sm:text-sm leading-relaxed italic flex-grow" style={{
+        textAlign: 'justify',
+        textJustify: 'inter-word',
+        hyphens: 'auto',
+        wordSpacing: 'normal'
+      }}>
         {review}
       </p>
 

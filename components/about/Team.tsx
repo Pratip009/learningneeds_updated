@@ -38,11 +38,16 @@ const Team = () => {
         <section className="px-6 md:px-12 py-12 bg-gradient-to-b from-white to-gray-100 overflow-hidden">
             {/* Title */}
             <div className="text-center mb-20">
-                <h3 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-yellow-400 via-green-400 to-teal-500 bg-clip-text text-transparent mt-1 sparkle-text">
+                <h3 className="text-5xl md:text-6xl font-extrabold bg-gray-900 bg-clip-text text-transparent mt-1">
                     Our Team
                 </h3>
 
-                <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+                <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto" style={{
+                    textAlign: 'justify',
+                    textJustify: 'inter-word',
+                    hyphens: 'auto',
+                    wordSpacing: 'normal'
+                }}>
                     Learning Needs dedicated leadership team is focused on delivering quality service.
                 </p>
             </div>
@@ -88,9 +93,9 @@ const Team = () => {
                             <div
                                 className={`absolute inset-0 transition-all duration-700 bg-gradient-to-t 
                                 ${hoveredIndex === index
-                                    ? "from-black/20 via-black/10 to-transparent"
-                                    : "from-black/50 via-black/30 to-transparent"
-                                }`}
+                                        ? "from-black/20 via-black/10 to-transparent"
+                                        : "from-black/50 via-black/30 to-transparent"
+                                    }`}
                             ></div>
 
                             {/* Tag */}

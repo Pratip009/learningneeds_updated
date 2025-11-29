@@ -63,7 +63,12 @@ export default function IndustryHero({
 
 
                     {description && (
-                        <p className="text-gray-300 text-lg w-[90%] md:w-[70%] mb-10">
+                        <p className="text-gray-300 text-lg w-[90%] md:w-[70%] mb-10" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                             {description}
                         </p>
                     )}

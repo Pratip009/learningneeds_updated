@@ -58,11 +58,21 @@ const About = () => {
                 </div>
               </div>
 
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6" style={{
+                                textAlign: 'justify',
+                                textJustify: 'inter-word',
+                                hyphens: 'auto',
+                                wordSpacing: 'normal'
+                            }}>
                 This proverb perfectly defines the inception of Learning Needs. We believe all companies have one thing in common - they survive and thrive by creating and maintaining satisfied customers through their people.
               </p>
 
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed mb-8" style={{
+                                textAlign: 'justify',
+                                textJustify: 'inter-word',
+                                hyphens: 'auto',
+                                wordSpacing: 'normal'
+                            }}>
                 The Learning Needs understands the importance of awakening, developing, and rewarding the greatness of a company&lsquo;s people through transformation. With our experience and expertise in leadership training, school consulting, teachers training, school start up, and Learning Needs customized product, we help organization to achieve their goals.
               </p>
 
