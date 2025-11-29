@@ -14,33 +14,38 @@ export const navLinks = [
     url: "/products",
     label: "Products",
   },
-  {
+   {
     id: 4,
+    url: "/training",
+    label: "Training",
+  },
+  {
+    id:5,
     url: "/school-management-service",
     label: "School Management",
   },
   {
-    id: 5,
+    id: 6,
     url: "/school-essentials",
     label: "School Essentials",
   },
   {
-    id: 6,
+    id: 7,
     url: "/sports",
     label: "Sports",
   },
   {
-    id: 7,
+    id: 8,
     url: "/gallery",
     label: "Gallery",
   },
    {
-    id: 8,
+    id: 9,
     url: "/blog",
     label: "Blog",
   },
   {
-    id: 9,
+    id: 10,
     url: "/contact",
     label: "Contact",
   },

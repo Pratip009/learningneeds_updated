@@ -71,7 +71,7 @@ const Hero = () => {
         return () => clearInterval(interval);
     }, [isAutoPlaying, slides.length]);
 
-    const goToSlide = (index:number) => {
+    const goToSlide = (index: number) => {
         setCurrentSlide(index);
         setIsAutoPlaying(false);
         setTimeout(() => setIsAutoPlaying(true), 10000);
@@ -99,9 +99,8 @@ const Hero = () => {
                 {randomShapes.map((shape) => (
                     <div
                         key={shape.id}
-                        className={`absolute ${
-                            shape.type === 'circle' ? 'rounded-full' : 'magicpattern animate-blob'
-                        }`}
+                        className={`absolute ${shape.type === 'circle' ? 'rounded-full' : 'magicpattern animate-blob'
+                            }`}
                         style={{
                             width: `${shape.size}px`,
                             height: `${shape.size}px`,
@@ -125,7 +124,7 @@ const Hero = () => {
                     const iconSize = 24 + (i % 5) * 4;
                     const floatDuration = 10 + (i % 6) * 2.5;
                     const floatDelay = (i % 5);
-                    
+
                     return (
                         <div
                             key={i}
@@ -148,22 +147,20 @@ const Hero = () => {
                 {slides.map((slide, index) => (
                     <div
                         key={index}
-                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                            index === currentSlide
-                                ? 'opacity-100 z-10'
-                                : 'opacity-0 z-0 pointer-events-none'
-                        }`}
+                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide
+                            ? 'opacity-100 z-10'
+                            : 'opacity-0 z-0 pointer-events-none'
+                            }`}
                     >
                         {/* Content - New Layout */}
                         <div className="relative z-10 h-full flex items-center pt-20 md:pt-24 lg:pt-0">
                             <div className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                                     {/* Text Content - Takes 6 columns */}
-                                    <div className={`lg:col-span-6 text-center lg:text-left transition-all duration-700 ${
-                                        index === currentSlide
-                                            ? 'translate-x-0 opacity-100'
-                                            : '-translate-x-10 opacity-0'
-                                    }`}>
+                                    <div className={`lg:col-span-6 text-center lg:text-left transition-all duration-700 ${index === currentSlide
+                                        ? 'translate-x-0 opacity-100'
+                                        : '-translate-x-10 opacity-0'
+                                        }`}>
                                         <div className="mb-4 inline-block px-4 py-1.5 bg-linear-to-r from-orange-600 to-orange-500 text-white rounded-full text-xs font-bold shadow-xl animate-pulse">
                                             {slide.subtitle}
                                         </div>
@@ -184,16 +181,20 @@ const Hero = () => {
                                     </div>
 
                                     {/* Image Content - Creative Layered Design - Takes 6 columns */}
-                                    <div className={`lg:col-span-6 hidden lg:block transition-all duration-700 ${
-                                        index === currentSlide
-                                            ? 'translate-x-0 opacity-100'
-                                            : 'translate-x-10 opacity-0'
-                                    }`}>
+                                    <div className={`lg:col-span-6 hidden lg:block transition-all duration-700 ${index === currentSlide
+                                        ? 'translate-x-0 opacity-100'
+                                        : 'translate-x-10 opacity-0'
+                                        }`}>
                                         <div className="relative h-[500px] lg:h-[600px] w-full">
                                             {/* Main Image Container with 3D Perspective */}
                                             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[85%] h-[85%]">
                                                 {/* Main Image */}
-                                                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-700 border-4 border-white/20">
+                                                <div className="relative w-full h-full bg-white/75
+ rounded-3xl overflow-hidden 
+shadow-[0_10px_20px_rgba(0,0,0,0.4),0_20px_40px_rgba(0,0,0,0.25)]
+hover:scale-105 transition-transform duration-700">
+
+
                                                     <Image
                                                         src={slide.image}
                                                         alt={slide.title}
@@ -245,11 +246,10 @@ const Hero = () => {
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`transition-all ${
-                            index === currentSlide
-                                ? 'w-12 bg-orange-500 shadow-lg shadow-orange-500/50'
-                                : 'w-3 bg-white/40 hover:bg-white/60'
-                        } h-3 rounded-full`}
+                        className={`transition-all ${index === currentSlide
+                            ? 'w-12 bg-orange-500 shadow-lg shadow-orange-500/50'
+                            : 'w-3 bg-white/40 hover:bg-white/60'
+                            } h-3 rounded-full`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}

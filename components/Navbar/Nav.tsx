@@ -4,8 +4,8 @@ import { navLinks } from '@/constants/constant'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { FiShoppingCart } from 'react-icons/fi'
 import { HiBars3BottomRight } from 'react-icons/hi2'
+import CartIcon from '../helper/CartIcon'
 
 type Props = {
     openNav: () => void
@@ -22,7 +22,7 @@ const Nav = ({ openNav }: Props) => {
 
     return (
         <div className={`fixed w-full transition-all duration-200 h-[12vh] z-[1000] ${navBg ? 'bg-indigo-800 shadow-lg' : 'bg-transparent'}`}>
-            <div className="flex items-center justify-between h-full w-[90%] mx-auto">
+            <div className="flex items-center justify-between h-full w-[95%] mx-auto">
 
                 {/* Logo with gradient background and glow effect */}
                 <Link href="/">
@@ -54,11 +54,12 @@ const Nav = ({ openNav }: Props) => {
                     ))}
                 </div>
 
-                {/* Right Section — Only Sign In button */}
+                {/* Right Section — Cart Icon & Sign In button */}
                 <div className="flex items-center space-x-6">
-                    <button className="hidden text-white hover:text-orange-600 transition-colors text-2xl">
-                        <FiShoppingCart />
-                    </button>
+                    {/* Cart Icon */}
+                    <CartIcon />
+
+                    {/* Sign In Button */}
                     <button
                         className="md:px-6 md:py-2 px-4 py-1 text-white font-semibold text-base bg-orange-600 hover:bg-orange-700 transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl hover:scale-105"
                     >

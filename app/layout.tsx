@@ -4,6 +4,8 @@ import "./globals.css";
 import ResponsiveNav from "@/components/Navbar/ResponsiveNav";
 import Footer from "@/components/Footer/Footer";
 
+import ReduxProvider from "@/components/ReduxProvider";
+
 const font = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -24,9 +26,12 @@ export default function RootLayout({
       <body
         className={`${font.className}`}
       >
-        <ResponsiveNav />
-        {children}
-        <Footer/>
+         <ReduxProvider>
+          <ResponsiveNav />
+          {children}
+          <Footer />
+        </ReduxProvider>
+
       </body>
     </html>
   );

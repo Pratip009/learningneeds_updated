@@ -4,7 +4,7 @@ export const productData = [
     title: "Wireless Noise Cancelling Headphones",
     description:
       "Experience crystal-clear audio with advanced noise cancellation technology. Perfect for travel, work, and entertainment with up to 30 hours of battery life.",
-    category: "Electronics",
+    category: "Book",
     originalPrice: 12999,
     discountPrice: 9999,
     available: true,
@@ -16,7 +16,7 @@ export const productData = [
     title: "Men's Running Shoes",
     description:
       "Lightweight and breathable running shoes designed for maximum comfort and durability. Ideal for jogging, workouts, and daily wear.",
-    category: "Footwear",
+    category: "Book",
     originalPrice: 3599,
     discountPrice: 2599,
     available: false,
@@ -28,7 +28,7 @@ export const productData = [
     title: "Smart Fitness Band",
     description:
       "Track your daily activities, heart rate, sleep cycles, and more with this sleek and durable fitness band. Stay connected with smart notifications.",
-    category: "Wearables",
+    category: "PDF",
     originalPrice: 2499,
     discountPrice: 1799,
     available: true,
@@ -40,7 +40,7 @@ export const productData = [
     title: "Wooden Study Table",
     description:
       "Premium engineered wood study table with a modern design. Perfect for home offices, student rooms, and work-from-home setups.",
-    category: "Furniture",
+    category: "Learning AID",
     originalPrice: 8999,
     discountPrice: 6999,
     available: true,
@@ -52,7 +52,7 @@ export const productData = [
     title: "Casual Cotton T-Shirt",
     description:
       "Soft and breathable cotton t-shirt designed for all-day comfort. Perfect for casual outings, travel, and everyday wear.",
-    category: "Fashion",
+    category: "PDF",
     originalPrice: 799,
     discountPrice: 499,
     available: true,
@@ -64,7 +64,7 @@ export const productData = [
     title: "Portable Bluetooth Speaker",
     description:
       "Compact and powerful speaker with deep bass and clear sound. Features Bluetooth connectivity, long battery life, and water-resistant design.",
-    category: "Electronics",
+    category: "Learning AID",
     originalPrice: 1999,
     discountPrice: 1499,
     available: false,
