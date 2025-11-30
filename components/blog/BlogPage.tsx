@@ -54,11 +54,16 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(blog.reaction);
 
-    // Helper function to strip HTML tags
+    // Helper function to strip HTML tags - SSR SAFE
     const stripHtml = (html: string): string => {
-        const tmp = document.createElement('DIV');
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || '';
+        // Check if we're in the browser
+        if (typeof window !== 'undefined') {
+            const tmp = document.createElement('DIV');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+        // Server-side fallback: use regex to strip HTML tags
+        return html.replace(/<[^>]*>/g, '');
     };
 
     // Helper function to format date
