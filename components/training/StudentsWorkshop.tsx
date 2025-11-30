@@ -61,10 +61,20 @@ const StudentsWorkshop = () => {
             <h3 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Empowering Young Minds
             </h3>
-            <p className="text-gray-600 leading-relaxed text-lg mb-6">
+            <p className="text-gray-600 leading-relaxed text-lg mb-6" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               We offer educative workshops for children, parents and teachers. Children's workshops target different dimensions of the child's personality, which are essential for global development. Some of these include persona build-up, gender education, stress free living, study skills and spiritual growth.
             </p>
-            <p className="text-gray-600 leading-relaxed text-lg">
+            <p className="text-gray-600 leading-relaxed text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               They build upon the children's strengths by enabling them to open up to others easily and express their views, help them set positive impressions on their peers, allow sharing of ideas, and add to their own confidence.
             </p>
           </div>
@@ -99,7 +109,12 @@ const StudentsWorkshop = () => {
           <h3 className="text-3xl font-bold text-gray-900 mb-6">
             Our Approach
           </h3>
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-700 text-lg leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
             Sessions for parents enhance parenting skills while those for teachers target optimal teacher-student relationships and ways for teachers to deal with children better. Learning Needs regularly arranges student workshops in various fields to impart practical approach and experiential learning in students.
           </p>
         </div>
@@ -182,7 +197,12 @@ const StudentsWorkshop = () => {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Career Preparation & Development
               </h3>
-              <p className="text-gray-700 leading-relaxed text-lg">
+              <p className="text-gray-700 leading-relaxed text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                 Assist career aspirants in career preparation and development through hands-on activities, mentorship, and practical guidance tailored to each student's unique strengths and aspirations.
               </p>
             </div>

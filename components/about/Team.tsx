@@ -42,12 +42,7 @@ const Team = () => {
                     Our Team
                 </h3>
 
-                <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto" style={{
-                    textAlign: 'justify',
-                    textJustify: 'inter-word',
-                    hyphens: 'auto',
-                    wordSpacing: 'normal'
-                }}>
+                <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
                     Learning Needs dedicated leadership team is focused on delivering quality service.
                 </p>
             </div>

@@ -89,10 +89,20 @@ const ParentingWorkshop = () => {
             <h3 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Raising Happy, Confident Children
             </h3>
-            <p className="text-gray-600 leading-relaxed text-lg mb-6">
+            <p className="text-gray-600 leading-relaxed text-lg mb-6" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               Most parents always worry about their children and don't know how to deal with them. They may not know the fact that all children are unique in the way they process information and learn things from their parents.
             </p>
-            <p className="text-gray-600 leading-relaxed text-lg">
+            <p className="text-gray-600 leading-relaxed text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               Our successful Parenting workshop is especially for all such parents. Through this workshop, parents will learn parenting skills to tackle their children aging from 2 to 20 years.
             </p>
           </div>
@@ -131,7 +141,12 @@ const ParentingWorkshop = () => {
           <h3 className="text-3xl font-bold text-gray-900 mb-6">
             Break the Chain, Upgrade Your Parenting
           </h3>
-          <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+          <div className="space-y-4 text-gray-700 text-lg leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
             <p>
               They can educate themselves to educate their child. Parents can apply real-life parenting techniques taught in this workshop. They will find so many parenting advice in this workshop, which will teach them how to deal with their children.
             </p>

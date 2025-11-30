@@ -97,12 +97,22 @@ const TrainingPrograms = () => {
             <br />Training Programs
           </h1>
           
-          <p className="text-xl text-gray-700 mx-auto leading-relaxed font-medium">
+          <p className="text-xl text-gray-700 mx-auto leading-relaxed font-medium" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
             Soft skills' Behavioural Shift training is essential because we do not have it in our academic curricula. 
             However it can be developed through continuous training.
           </p>
           
-          <p className="text-lg text-gray-600 mx-auto">
+          <p className="text-lg text-gray-600 mx-auto" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
             Our skill based training programs are designed to encourage <span className="text-purple-600 font-bold">'awareness'</span> in one's behavioural patterns. 
             Learning Needs international quality Training & Development Programs are designed to help today's aspiring 
             professionals to succeed in an ever increasing competitive and diverse business environment.

@@ -1,168 +1,349 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import React, { useState, } from 'react';
-import { Award, Target, Heart, Users, Handshake, Lightbulb, Sprout, Flag, CheckCircle, Star, TrendingUp, Briefcase, } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, Target, Heart, Users, Handshake, Lightbulb, Sprout, Flag, CheckCircle, Star, TrendingUp, Briefcase } from 'lucide-react';
 
 const LearningNeedsTree = () => {
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-
-
-
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const learningItems = [
-    { letter: 'L', word: 'Leadership', icon: Award, color: 'from-purple-500 to-pink-500', description: 'Guide and inspire others' },
-    { letter: 'E', word: 'Effectiveness', icon: Target, color: 'from-blue-500 to-cyan-500', description: 'Achieve optimal results' },
-    { letter: 'A', word: 'Attitude', icon: Heart, color: 'from-red-500 to-orange-500', description: 'Maintain positive mindset' },
-    { letter: 'R', word: 'Relation', icon: Users, color: 'from-green-500 to-emerald-500', description: 'Build strong connections' },
-    { letter: 'N', word: 'Negotiation', icon: Handshake, color: 'from-yellow-500 to-amber-500', description: 'Find mutual agreements' },
-    { letter: 'I', word: 'Innovation', icon: Lightbulb, color: 'from-indigo-500 to-purple-500', description: 'Create and implement new ideas' },
-    { letter: 'N', word: 'Nurture', icon: Sprout, color: 'from-teal-500 to-green-500', description: 'Develop and cultivate growth' },
-    { letter: 'G', word: 'Goal', icon: Flag, color: 'from-pink-500 to-rose-500', description: 'Set and achieve objectives' },
-    { letter: 'N', word: 'Needful', icon: CheckCircle, color: 'from-cyan-500 to-blue-500', description: 'Focus on essentials' },
-    { letter: 'E', word: 'Essential', icon: Star, color: 'from-orange-500 to-red-500', description: 'Core fundamentals' },
-    { letter: 'E', word: 'Expectational', icon: TrendingUp, color: 'from-violet-500 to-purple-500', description: 'Meet and exceed standards' },
-    { letter: 'D', word: 'Development', icon: TrendingUp, color: 'from-emerald-500 to-teal-500', description: 'Continuous improvement' },
-    { letter: 'S', word: 'Service', icon: Briefcase, color: 'from-amber-500 to-yellow-500', description: 'Deliver value to others' },
+    { letter: 'L', word: 'Leadership', icon: Award, color: 'bg-purple-600', description: 'Guide and inspire others to achieve collective goals' },
+    { letter: 'E', word: 'Effectiveness', icon: Target, color: 'bg-blue-600', description: 'Achieve optimal results with maximum efficiency' },
+    { letter: 'A', word: 'Attitude', icon: Heart, color: 'bg-red-600', description: 'Maintain positive mindset in all circumstances' },
+    { letter: 'R', word: 'Relation', icon: Users, color: 'bg-green-600', description: 'Build strong connections and meaningful relationships' },
+    { letter: 'N', word: 'Negotiation', icon: Handshake, color: 'bg-yellow-600', description: 'Find mutual agreements through dialogue' },
+    { letter: 'I', word: 'Innovation', icon: Lightbulb, color: 'bg-indigo-600', description: 'Create and implement groundbreaking ideas' },
+    { letter: 'N', word: 'Nurture', icon: Sprout, color: 'bg-teal-600', description: 'Develop and cultivate continuous growth' },
+    { letter: 'G', word: 'Goal', icon: Flag, color: 'bg-pink-600', description: 'Set and achieve strategic objectives' },
+    { letter: 'N', word: 'Needful', icon: CheckCircle, color: 'bg-cyan-600', description: 'Focus on essentials and priorities' },
+    { letter: 'E', word: 'Essential', icon: Star, color: 'bg-orange-600', description: 'Master core fundamentals' },
+    { letter: 'E', word: 'Expectational', icon: TrendingUp, color: 'bg-violet-600', description: 'Meet and exceed all standards' },
+    { letter: 'D', word: 'Development', icon: TrendingUp, color: 'bg-emerald-600', description: 'Continuous improvement and evolution' },
+    { letter: 'S', word: 'Service', icon: Briefcase, color: 'bg-amber-600', description: 'Deliver exceptional value to others' },
   ];
 
-  // Organize items in dome layers
-  const layers = [
-    [learningItems[0]], // Top - Leadership
-    [learningItems[1], learningItems[2]], // Second layer
-    [learningItems[3], learningItems[4], learningItems[5]], // Third layer
-    [learningItems[6], learningItems[7], learningItems[8], learningItems[9]], // Fourth layer
-    [learningItems[10], learningItems[11], learningItems[12]], // Base layer
+  // Organize into rows: 5, 5, 3
+  const rows = [
+    learningItems.slice(0, 5),   // First 5
+    learningItems.slice(5, 10),  // Next 5
+    learningItems.slice(10, 13)  // Last 3
   ];
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-white via-blue-50 to-orange-100 relative overflow-hidden">
-      <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12 flex items-center justify-center min-h-screen">
-        <div className="max-w-7xl w-full">
-          {/* Header */}
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-600 via-red-600 to-cyan-600 mb-2 sm:mb-4 sparkle-text">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtOS45NCAwLTE4IDguMDYtMTggMThzOC4wNiAxOCAxOCAxOCAxOC04LjA2IDE4LTE4LTguMDYtMTgtMTgtMTh6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1vcGFjaXR5PSIuMDIiLz48L2c+PC9zdmc+')] opacity-40"></div>
+
+      <div className="relative z-10 py-12 px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="max-w-7xl mx-auto text-center mb-16">
+          <div className="inline-block mb-4">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-200 text-purple-700 text-sm font-medium">
+              Professional Development Framework
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+            <span className="bg-purple-600 bg-clip-text text-transparent">
               Learning Needs Traits
-            </h1>
-            <p className="text-gray-600 text-sm sm:text-base md:text-lg lg:text-xl px-4">
-              Building excellence from foundation to leadership
-            </p>
-          </div>
+            </span>
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            A comprehensive framework for professional excellence, encompassing essential traits from foundational skills to transformative leadership
+          </p>
+        </div>
 
-          {/* Dome Structure */}
-          <div className="relative max-w-6xl mx-auto">
-            {/* Background dome glow */}
-            <div className="absolute inset-0 bg-gradient-radial from-purple-100 via-pink-50 to-transparent blur-3xl opacity-50"></div>
+        {/* Cards Layout */}
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* First Row - 5 boxes */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {rows[0].map((item, index) => {
+              const Icon = item.icon;
+              const isActive = activeCard === index;
 
-            {/* Layers */}
-            <div className="relative space-y-4 sm:space-y-6 md:space-y-8">
-              {layers.map((layer, layerIndex) => {
-                const itemCount = layer.length;
-                const isSingleItem = itemCount === 1;
-
-                return (
-                  <div key={layerIndex} className="relative">
-                    {/* Connecting lines for hierarchy */}
-                    {layerIndex < layers.length - 1 && (
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0.5 h-4 sm:h-6 md:h-8 bg-gradient-to-b from-purple-400/50 to-transparent"></div>
-                    )}
-
-                    <div className={`
-                      flex items-stretch justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-6
-                      ${isSingleItem ? '' : 'flex-wrap'}
-                      px-2 sm:px-4
-                    `}>
-                      {layer.map((item, itemIndex) => {
-                        const Icon = item.icon;
-                        const globalIndex = learningItems.indexOf(item);
-
-                        return (
-                          <div
-                            key={itemIndex}
-                            onMouseEnter={() => setHoveredItem(globalIndex)}
-                            onMouseLeave={() => setHoveredItem(null)}
-                            className={`
-                              relative
-                              ${isSingleItem ? 'w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg' :
-                                'w-28 xs:w-32 sm:w-36 md:w-44 lg:w-52'}
-                            `}
-                          >
-                            {/* Connection line to parent */}
-                            {layerIndex > 0 && (
-                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0.5 h-4 sm:h-6 md:h-8 bg-gradient-to-t from-purple-400/50 to-transparent"></div>
-                            )}
-
-                            <div
-                              className={`
-                                bg-gradient-to-br ${item.color} p-0.5 sm:p-1 rounded-xl sm:rounded-2xl
-                                transform transition-all duration-300 cursor-pointer
-                                ${hoveredItem === globalIndex ? 'scale-105 shadow-2xl shadow-purple-300/50' : 'scale-100 shadow-lg'}
-                                h-full
-                              `}
-                            >
-                              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 lg:p-6 h-full flex flex-row">
-                                <div
-                                  className={`
-    flex flex-1
-    ${isSingleItem
-                                      ? 'flex-row items-center gap-3 sm:gap-4' /* Leadership → row on all screens including mobile */
-                                      : 'flex-col items-center text-center gap-2 sm:gap-3'
-                                    }
-  `}
-                                >
-
-                                  {/* Letter Circle */}
-                                  <div className={`
-                                    ${isSingleItem ? 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20' :
-                                      'w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-14 lg:h-14'}
-                                    rounded-full bg-gradient-to-br ${item.color}
-                                    flex items-center justify-center flex-shrink-0
-                                    shadow-lg
-                                  `}>
-                                    <span className={`text-white font-bold ${isSingleItem ? 'text-lg sm:text-xl md:text-2xl lg:text-3xl' : 'text-base sm:text-lg md:text-xl lg:text-2xl'}`}>
-                                      {item.letter}
-                                    </span>
-                                  </div>
-
-                                  {/* Text Content */}
-                                  <div className="flex-1 min-w-0">
-                                    <h3 className={`text-gray-800 font-bold ${isSingleItem ? 'text-base sm:text-lg md:text-xl lg:text-2xl' : 'text-xs sm:text-sm md:text-base lg:text-lg'} mb-0.5 sm:mb-1`}>
-                                      {item.word}
-                                    </h3>
-                                    <p className={`
-                                      text-gray-600 transition-all duration-300
-                                      ${isSingleItem ? 'text-xs sm:text-sm md:text-base' : 'text-[10px] sm:text-xs md:text-sm'}
-                                      ${hoveredItem === globalIndex ? 'opacity-100' : 'opacity-70'}
-                                    `}>
-                                      {item.description}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                {/* Icon - Fixed at bottom */}
-                                <div className={`
-                                  flex justify-center mt-2 sm:mt-3
-                                  transform transition-all duration-300
-                                  ${hoveredItem === globalIndex ? 'rotate-12 scale-110' : 'rotate-0 scale-100'}
-                                `}>
-                                  <Icon className={`${isSingleItem ? 'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10' : 'w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7'} text-gray-700`} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+              return (
+                <div
+                  key={index}
+                  onMouseEnter={() => setActiveCard(index)}
+                  onMouseLeave={() => setActiveCard(null)}
+                  className={`
+                    group relative cursor-pointer
+                    transform transition-all duration-500 ease-out
+                    ${isActive ? 'scale-105 z-20' : 'scale-100 hover:scale-102'}
+                  `}
+                >
+                  {/* Card glow effect */}
+                  <div className={`
+                    absolute inset-0 rounded-2xl transition-opacity duration-500
+                    ${isActive ? 'opacity-100' : 'opacity-0'}
+                  `}>
+                    <div className={`absolute inset-0 ${item.color} rounded-2xl blur-xl opacity-30`}></div>
                   </div>
-                );
-              })}
-            </div>
 
-            {/* Base platform */}
+                  {/* Main card */}
+                  <div className="relative bg-white border-2 border-gray-200 rounded-2xl p-6 h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    {/* Background pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                      <div className="absolute inset-0" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M0 0h20v20H0V0zm10 10h10v10H10V10z'/%3E%3C/g%3E%3C/svg%3E")`,
+                      }} />
+                    </div>
 
+                    {/* Content */}
+                    <div className="relative z-10">
+                      {/* Icon and Letter */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`
+                          ${item.color} w-14 h-14 rounded-xl flex items-center justify-center
+                          transform transition-transform duration-500
+                          ${isActive ? 'rotate-12 scale-110' : 'rotate-0 scale-100'}
+                          shadow-lg
+                        `}>
+                          <span className="text-white font-bold text-2xl">{item.letter}</span>
+                        </div>
+                        <Icon className={`
+                          w-8 h-8 text-gray-400
+                          transform transition-all duration-500
+                          ${isActive ? 'text-gray-700 rotate-12' : 'group-hover:text-gray-600'}
+                        `} />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-gray-800 mb-2 tracking-tight">
+                        {item.word}
+                      </h3>
+
+                      {/* Description */}
+                      <p className={`
+                        text-gray-600 text-sm leading-relaxed
+                        transform transition-all duration-500
+                        ${isActive ? 'text-gray-700' : ''}
+                      `}>
+                        {item.description}
+                      </p>
+
+                      {/* Decorative line */}
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className={`
+                          h-1 rounded-full transition-all duration-500
+                          ${isActive ? `${item.color} w-full` : 'bg-gray-300 w-12'}
+                        `}></div>
+                      </div>
+                    </div>
+
+                    {/* Hover gradient overlay */}
+                    <div className={`
+                      absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl
+                    `}></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
+          {/* Second Row - 5 boxes */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {rows[1].map((item, index) => {
+              const Icon = item.icon;
+              const globalIndex = index + 5;
+              const isActive = activeCard === globalIndex;
 
+              return (
+                <div
+                  key={index}
+                  onMouseEnter={() => setActiveCard(globalIndex)}
+                  onMouseLeave={() => setActiveCard(null)}
+                  className={`
+                    group relative cursor-pointer
+                    transform transition-all duration-500 ease-out
+                    ${isActive ? 'scale-105 z-20' : 'scale-100 hover:scale-102'}
+                  `}
+                >
+                  {/* Card glow effect */}
+                  <div className={`
+                    absolute inset-0 rounded-2xl transition-opacity duration-500
+                    ${isActive ? 'opacity-100' : 'opacity-0'}
+                  `}>
+                    <div className={`absolute inset-0 ${item.color} rounded-2xl blur-xl opacity-30`}></div>
+                  </div>
+
+                  {/* Main card */}
+                  <div className="relative bg-white border-2 border-gray-200 rounded-2xl p-6 h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    {/* Background pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                      <div className="absolute inset-0" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M0 0h20v20H0V0zm10 10h10v10H10V10z'/%3E%3C/g%3E%3C/svg%3E")`,
+                      }} />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10">
+                      {/* Icon and Letter */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`
+                          ${item.color} w-14 h-14 rounded-xl flex items-center justify-center
+                          transform transition-transform duration-500
+                          ${isActive ? 'rotate-12 scale-110' : 'rotate-0 scale-100'}
+                          shadow-lg
+                        `}>
+                          <span className="text-white font-bold text-2xl">{item.letter}</span>
+                        </div>
+                        <Icon className={`
+                          w-8 h-8 text-gray-400
+                          transform transition-all duration-500
+                          ${isActive ? 'text-gray-700 rotate-12' : 'group-hover:text-gray-600'}
+                        `} />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-gray-800 mb-2 tracking-tight">
+                        {item.word}
+                      </h3>
+
+                      {/* Description */}
+                      <p className={`
+                        text-gray-600 text-sm leading-relaxed
+                        transform transition-all duration-500
+                        ${isActive ? 'text-gray-700' : ''}
+                      `}>
+                        {item.description}
+                      </p>
+
+                      {/* Decorative line */}
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className={`
+                          h-1 rounded-full transition-all duration-500
+                          ${isActive ? `${item.color} w-full` : 'bg-gray-300 w-12'}
+                        `}></div>
+                      </div>
+                    </div>
+
+                    {/* Hover gradient overlay */}
+                    <div className={`
+                      absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl
+                    `}></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Third Row - 3 boxes (full width on mobile, centered on larger screens) */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:max-w-4xl lg:mx-auto">
+            {rows[2].map((item, index) => {
+              const Icon = item.icon;
+              const globalIndex = index + 10;
+              const isActive = activeCard === globalIndex;
+
+              return (
+                <div
+                  key={index}
+                  onMouseEnter={() => setActiveCard(globalIndex)}
+                  onMouseLeave={() => setActiveCard(null)}
+                  className={`
+                    group relative cursor-pointer
+                    transform transition-all duration-500 ease-out
+                    ${isActive ? 'scale-105 z-20' : 'scale-100 hover:scale-102'}
+                  `}
+                >
+                  {/* Card glow effect */}
+                  <div className={`
+                    absolute inset-0 rounded-2xl transition-opacity duration-500
+                    ${isActive ? 'opacity-100' : 'opacity-0'}
+                  `}>
+                    <div className={`absolute inset-0 ${item.color} rounded-2xl blur-xl opacity-30`}></div>
+                  </div>
+
+                  {/* Main card */}
+                  <div className="relative bg-white border-2 border-gray-200 rounded-2xl p-6 h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    {/* Background pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                      <div className="absolute inset-0" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M0 0h20v20H0V0zm10 10h10v10H10V10z'/%3E%3C/g%3E%3C/svg%3E")`,
+                      }} />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10">
+                      {/* Icon and Letter */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`
+                          ${item.color} w-14 h-14 rounded-xl flex items-center justify-center
+                          transform transition-transform duration-500
+                          ${isActive ? 'rotate-12 scale-110' : 'rotate-0 scale-100'}
+                          shadow-lg
+                        `}>
+                          <span className="text-white font-bold text-2xl">{item.letter}</span>
+                        </div>
+                        <Icon className={`
+                          w-8 h-8 text-gray-400
+                          transform transition-all duration-500
+                          ${isActive ? 'text-gray-700 rotate-12' : 'group-hover:text-gray-600'}
+                        `} />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-gray-800 mb-2 tracking-tight">
+                        {item.word}
+                      </h3>
+
+                      {/* Description */}
+                      <p className={`
+                        text-gray-600 text-sm leading-relaxed
+                        transform transition-all duration-500
+                        ${isActive ? 'text-gray-700' : ''}
+                      `}>
+                        {item.description}
+                      </p>
+
+                      {/* Decorative line */}
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className={`
+                          h-1 rounded-full transition-all duration-500
+                          ${isActive ? `${item.color} w-full` : 'bg-gray-300 w-12'}
+                        `}></div>
+                      </div>
+                    </div>
+
+                    {/* Hover gradient overlay */}
+                    <div className={`
+                      absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl
+                    `}></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom CTA Section */}
+        <div className="max-w-4xl mx-auto mt-20 text-center">
+          <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50 border-2 border-purple-200 rounded-3xl p-8 sm:p-12 shadow-xl">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">
+              Ready to Transform Your Skills?
+            </h2>
+            <p className="text-gray-600 mb-8 text-lg">
+              Master these 13 essential traits and unlock your full potential
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-purple-300/50 transition-all duration-300 transform hover:scale-105">
+                Get Started
+              </button>
+              <button className="px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300">
+                Learn More
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

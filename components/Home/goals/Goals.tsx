@@ -22,7 +22,12 @@ const Goal = () => {
                         Building a Better Future.
                     </h1>
 
-                    <p className='mt-4 text-gray-600'>
+                    <p className='mt-4 text-gray-600' style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                         This proverb perfectly defines the inception of Learning Needs.
                         We believe all companies have one thing in common — they survive 
                         and thrive by creating and maintaining satisfied customers through their people.
@@ -45,7 +50,12 @@ const Goal = () => {
                             <h1 className='text-xl md:text-2xl mb-3 text-black/70 font-bold'>
                                 Mission Statement
                             </h1>
-                            <p className='w-[90%] lg:w-full text-base text-black/60'>
+                            <p className='w-[90%] lg:w-full text-base text-black/60' style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                                 Our mission is to awaken, develop, and empower the greatness within people and organizations.
                                 Through leadership training, school consulting, teacher development, startup guidance, and
                                 customized learning solutions, we aim to create meaningful transformation that drives
@@ -61,7 +71,12 @@ const Goal = () => {
                             <h1 className='text-xl md:text-2xl mb-3 text-black/70 font-bold'>
                                 Vision Statement
                             </h1>
-                            <p className='w-[90%] lg:w-full text-base text-black/60'>
+                            <p className='w-[90%] lg:w-full text-base text-black/60' style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                                 Our vision is to be a global catalyst for educational and organizational transformation.
                                 We strive to build a world where schools, educators, and professionals thrive through
                                 continuous growth, inspired leadership, and innovative learning experiences.

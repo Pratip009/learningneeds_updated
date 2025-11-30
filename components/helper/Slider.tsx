@@ -48,7 +48,7 @@ const Slider = () => {
         >
             <SliderCard
                 image="/images/about/neha.jpg"
-                name="Neha Sharma"
+                name="Neha Ashwin"
                 designation="Principal, Maharishi Vidya Mandir Senior Secondary School, Jolarpet"
                 review="Learning Needs is indeed true to its name when it comes to service.It is indeed the best program on teachers training which I have come across.Mr.Rahul is a thorough professional who creates tailor made sessions according to the client's need.This was a very interactive workshop compared to those available from other providers which feel more like lectures. The day really fine tuned my skills and the updates I have received since mean I can continue my learning into the future. Maharishi Vidya Mandir school has been immensely benefitted by the training program.The performance of the teachers has also shown remarkable difference after the training session."
             />

@@ -31,7 +31,7 @@ const Nav = ({ openNav }: Props) => {
                         <div className="absolute -inset-2 rounded-xl opacity-30 blur-lg group-hover:opacity-50 transition-opacity duration-300"></div>
 
                         {/* Logo container with gradient background */}
-                        <div className="relative bg-gradient-to-br from-white via-blue-50 to-cyan-50 p-2 rounded-xl shadow-lg border border-white/20 backdrop-blur-sm">
+                        <div className="relative bg-linear-to-br from-white via-blue-50 to-cyan-50 p-2 rounded-xl shadow-lg border border-white/20 backdrop-blur-sm">
                             <Image
                                 src="/images/LN.webp"
                                 alt="Logo"
@@ -57,7 +57,7 @@ const Nav = ({ openNav }: Props) => {
                 {/* Right Section — Cart Icon & Sign In button */}
                 <div className="flex items-center space-x-6">
                     {/* Cart Icon */}
-                    <CartIcon />
+
 
                     {/* Sign In Button */}
                     <button
@@ -65,7 +65,7 @@ const Nav = ({ openNav }: Props) => {
                     >
                         Sign In
                     </button>
-
+                    <CartIcon />
                     {/* Mobile Hamburger */}
                     <HiBars3BottomRight onClick={openNav} className="w-8 h-8 cursor-pointer text-white lg:hidden" />
                 </div>

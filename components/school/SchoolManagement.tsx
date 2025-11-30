@@ -73,7 +73,12 @@ const SchoolManagement = () => {
               <Award className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">Expert Support</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               The Learning Needs team has extensive expertise on school management issues and can provide all necessary support in various ways. Our team member can advise you on any issues which your school may have. This could be staff performance issues, appointing a new governance structure, or even a new school build.
             </p>
           </div>
@@ -84,7 +89,12 @@ const SchoolManagement = () => {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors">Complete Solutions</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               Learning Needs subject matter experts will help you to provide all the support from conceptualization to setting your own world class school. We develop a finance model to suit our clients need, advice on building design & architecture, affiliation, curriculum, activity books and lesson plans, develop activities for students, staff recruitment and training workshop.
             </p>
           </div>
@@ -95,7 +105,12 @@ const SchoolManagement = () => {
               <Users className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition-colors">Long-term Partnership</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               We offer a full range of services, spanning organizational structure, project planning and development. At Learning Needs we value the relationships that we foster with our educational leaders of the schools we collaborate, sometimes over several years.
             </p>
           </div>
@@ -106,7 +121,12 @@ const SchoolManagement = () => {
               <Lightbulb className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-orange-600 transition-colors">Fresh Perspective</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               While the knowledge of a school, its context and its strengths and challenges are built up by a single improvement advisor over time, sometimes a fresh pair of eyes or another expert with a particular set of skills or experience can supplement the support.
             </p>
           </div>

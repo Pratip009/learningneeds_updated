@@ -75,7 +75,7 @@ const ChallengesSolutions = () => {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          
+
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             From <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">Challenges</span> to{' '}
             <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Solutions</span>
@@ -91,11 +91,11 @@ const ChallengesSolutions = () => {
           <div className="relative group h-full">
             {/* Animated glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 rounded-3xl opacity-30 group-hover:opacity-60 blur-2xl transition-all duration-700"></div>
-            
+
             <div className="relative h-full bg-slate-800/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 group-hover:border-orange-500/50 transition-all duration-500 shadow-2xl flex flex-col">
               {/* Animated corner accent */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
-              
+
               {/* Top accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -123,7 +123,12 @@ const ChallengesSolutions = () => {
                     <div className="flex-shrink-0 mt-1.5">
                       <div className="w-3 h-3 bg-gradient-to-br from-red-500 to-orange-500 rounded-full group-hover/item:scale-150 group-hover/item:shadow-lg group-hover/item:shadow-red-500/50 transition-all duration-300"></div>
                     </div>
-                    <p className="text-gray-300 leading-relaxed group-hover/item:text-white transition-colors duration-300 text-[15px]">
+                    <p className="text-gray-300 leading-relaxed group-hover/item:text-white transition-colors duration-300 text-[15px]" style={{
+                      textAlign: 'justify',
+                      textJustify: 'inter-word',
+                      hyphens: 'auto',
+                      wordSpacing: 'normal'
+                    }}>
                       {challenge}
                     </p>
                   </div>
@@ -139,11 +144,11 @@ const ChallengesSolutions = () => {
           <div className="relative group h-full">
             {/* Animated glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-3xl opacity-30 group-hover:opacity-60 blur-2xl transition-all duration-700"></div>
-            
+
             <div className="relative h-full bg-slate-800/90 backdrop-blur-xl rounded-3xl p-8 border border-white/10 group-hover:border-emerald-500/50 transition-all duration-500 shadow-2xl flex flex-col">
               {/* Animated corner accent */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
-              
+
               {/* Top accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -171,7 +176,12 @@ const ChallengesSolutions = () => {
                     <div className="flex-shrink-0 mt-1.5">
                       <div className="w-3 h-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full group-hover/item:scale-150 group-hover/item:shadow-lg group-hover/item:shadow-green-500/50 transition-all duration-300"></div>
                     </div>
-                    <p className="text-gray-300 leading-relaxed group-hover/item:text-white transition-colors duration-300 text-[15px]">
+                    <p className="text-gray-300 leading-relaxed group-hover/item:text-white transition-colors duration-300 text-[15px]" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                       {solution}
                     </p>
                   </div>
@@ -184,7 +194,7 @@ const ChallengesSolutions = () => {
           </div>
         </div>
 
-       
+
       </div>
     </div>
   );

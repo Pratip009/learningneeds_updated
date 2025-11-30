@@ -1,7 +1,10 @@
 'use client'
 
 import IndustryHero from '@/components/helper/IndustryHero'
+import AdditionalSupport from '@/components/school/AdditionalSupport'
+import ExpertiseSection from '@/components/school/ExpertiseSection'
 import SchoolManagement from '@/components/school/SchoolManagement'
+import SchoolServices from '@/components/school/SchoolServices'
 import StartingNewSchool from '@/components/school/StartingNewSchool'
 import StartupSchoolServices from '@/components/school/StartupSchoolServices'
 import React from 'react'
@@ -24,6 +27,9 @@ With a strong focus on measurable outcomes and high-quality delivery, we ensure 
 
             <StartingNewSchool />
             <StartupSchoolServices/>
+            <SchoolServices/>
+            <ExpertiseSection/>
+            <AdditionalSupport/>
         </>
     )
 }

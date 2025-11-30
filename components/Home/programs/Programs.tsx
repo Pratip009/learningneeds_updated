@@ -1,37 +1,47 @@
 import React, { useMemo } from 'react'
 import { ArrowRight, Building2, Users, Trophy, Briefcase, Trees, Globe, IceCream } from 'lucide-react'
+import Link from "next/link";
 
 const Programs = () => {
   const programs = [
     {
       icon: <Building2 className="w-10 h-10" />,
       title: "School Management Services",
-      description: "From vision to reality, expert school management guides you through every step of establishing a thriving educational institution.",
+      description:
+        "From vision to reality, expert school management guides you through every step of establishing a thriving educational institution.",
       gradient: "from-blue-500 to-cyan-500",
-      bgGradient: "from-blue-50 to-cyan-50"
+      bgGradient: "from-blue-50 to-cyan-50",
+      link: "/school-management-service",
     },
     {
       icon: <Users className="w-10 h-10" />,
       title: "Training Program",
-      description: "Bridging the gap. Our inclusive training empowers teachers, engages students, and equips parents to foster a collaborative learning environment.",
+      description:
+        "Bridging the gap. Our inclusive training empowers teachers, engages students, and equips parents to foster a collaborative learning environment.",
       gradient: "from-purple-500 to-pink-500",
-      bgGradient: "from-purple-50 to-pink-50"
+      bgGradient: "from-purple-50 to-pink-50",
+      link: "/training",
     },
     {
       icon: <Trophy className="w-10 h-10" />,
       title: "Sports Training",
-      description: "From the classroom to the playing field, our comprehensive training nurtures athletic talent and fosters a love for physical fitness.",
+      description:
+        "From the classroom to the playing field, our comprehensive training nurtures athletic talent and fosters a love for physical fitness.",
       gradient: "from-green-500 to-teal-500",
-      bgGradient: "from-green-50 to-teal-50"
+      bgGradient: "from-green-50 to-teal-50",
+      link: "/sports",
     },
     {
       icon: <Briefcase className="w-10 h-10" />,
       title: "Services",
-      description: "From essential supplies to expert services, we support schools in creating an inspiring effective learning environment.",
+      description:
+        "From essential supplies to expert services, we support schools in creating an inspiring effective learning environment.",
       gradient: "from-orange-500 to-red-500",
-      bgGradient: "from-orange-50 to-red-50"
-    }
-  ]
+      bgGradient: "from-orange-50 to-red-50",
+      link: "/school-essentials",
+    },
+  ];
+
 
   // Pre-calculate floating icon positions
   const floatingIcons = useMemo(() => [
@@ -111,12 +121,15 @@ const Programs = () => {
                   </div>
 
                   {/* Read More Link */}
-                  <div className="flex items-center gap-2 group/link">
-                    <span className={`font-bold text-lg bg-gradient-to-r ${program.gradient} bg-clip-text text-transparent`}>
+                  <Link href={program.link} className="flex items-center gap-2 group/link">
+                    <span className={`font-bold text-lg bg-linear-to-r ${program.gradient} bg-clip-text text-transparent`}>
                       Read More
                     </span>
-                    <ArrowRight className={`w-5 h-5 bg-gradient-to-r ${program.gradient} bg-clip-text text-transparent group-hover/link:translate-x-2 transition-transform duration-300`} style={{ color: 'inherit' }} />
-                  </div>
+                    <ArrowRight
+                      className={`w-5 h-5 bg-linear-to-r ${program.gradient} bg-clip-text text-transparent group-hover/link:translate-x-2 transition-transform duration-300`}
+                    />
+                  </Link>
+
                 </div>
 
                 {/* Decorative Background Element */}

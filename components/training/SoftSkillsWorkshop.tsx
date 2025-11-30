@@ -61,7 +61,12 @@ const SoftSkillsWorkshop = () => {
             <h3 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Beyond Technical Expertise
             </h3>
-            <p className="text-gray-600 leading-relaxed text-lg mb-6">
+            <p className="text-gray-600 leading-relaxed text-lg mb-6" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               The term "soft skills" is a common buzzword that employers and upper
               management often use when it comes to enhancing workplace efficiency
               and hiring new job candidates. But what does it really mean? People
@@ -69,7 +74,12 @@ const SoftSkillsWorkshop = () => {
               skills. These are soft skills that need to be developed and worked
               on over time.
             </p>
-            <p className="text-gray-600 leading-relaxed text-lg">
+            <p className="text-gray-600 leading-relaxed text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               Learning Needs provides exhaustive online and in-person soft skills
               training to help develop a positive and productive work culture.
             </p>
@@ -109,7 +119,12 @@ const SoftSkillsWorkshop = () => {
           <h3 className="text-3xl font-bold text-gray-900 mb-6">
             Our Soft Skills Workshop
           </h3>
-          <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+          <div className="space-y-4 text-gray-700 text-lg leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
             <p>
               Our soft skills workshops are custom-tailored to the needs of your
               company. We help identify skill gaps and enhance personal,
@@ -167,13 +182,23 @@ const SoftSkillsWorkshop = () => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   Customized Training
                 </h3>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                   Online soft skills training is essential for the modern workforce,
                   especially for remote and hybrid employees. We provide flexible,
                   custom-tailored soft skills training solutions designed to boost
                   communication, creativity, and collaboration.
                 </p>
-                <p className="text-gray-700 leading-relaxed mt-4">
+                <p className="text-gray-700 leading-relaxed mt-4 " style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                   Our trainers help your team develop naturally strong skills while
                   improving areas where they may need support.
                 </p>
@@ -187,7 +212,12 @@ const SoftSkillsWorkshop = () => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   Training Programs
                 </h3>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                   Learning Needs trains companies across all industries and sizes.
                   Whether you're a new or established business, our goal is to help
                   you unlock the full potential of your workforce by developing

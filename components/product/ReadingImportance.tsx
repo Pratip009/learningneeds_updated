@@ -38,13 +38,23 @@ export default function ReadingImportance() {
         {/* Main Content Card */}
         <div className={`bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 transition-all duration-300 ${isExpanded ? 'mb-6 sm:mb-8' : 'mb-2 sm:mb-3'}`}>
           <div className="max-w-none">
-            <p className="text-gray-700 leading-relaxed text-base sm:text-lg mb-4 sm:mb-6">
+            <p className="text-gray-700 leading-relaxed text-base sm:text-lg mb-4 sm:mb-6" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
               One of the great reasons that signify the importance of book reading in our life is that <span className="text-purple-600 font-semibold">books act as our best friends</span>. Friends are one of the most important parts of our life. We can&lsquo;t imagine our life without the companionship of a good friend. Similarly, a book is like a best friend that constantly inspires us to become the best versions of ourselves. Books enrich our minds with knowledge just like a good friend. We can learn a lot from books and they can help us in overcoming our failures as well as shape our minds.
             </p>
 
             <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0'}`}>
               <div className="border-t border-gray-300 pt-4 sm:pt-6 mt-4 sm:mt-6">
-                <p className="text-gray-700 leading-relaxed text-base sm:text-lg mb-6 sm:mb-8">
+                <p className="text-gray-700 leading-relaxed text-base sm:text-lg mb-6 sm:mb-8" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                   A variety of tasks in daily life require reading and understanding written instructions. If children do not learn to read, they cannot read to learn. Children should be encouraged to pick up a book they prefer. Children may not have much reading time at school but parents can encourage their children to pick up books at home. Reading books helps in <span className="text-purple-600 font-semibold">cognitive mental stimulation and brain exercising</span>, enhancing the child&lsquo;s imagination amongst many other benefits.
                 </p>
 

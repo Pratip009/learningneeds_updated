@@ -81,7 +81,12 @@ const Footer = () => {
                 Let&lsquo;s Change, Learn,<br />
                 Grow & Transform!
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-white/95 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p className="text-base sm:text-lg md:text-xl text-white/95 leading-relaxed max-w-2xl mx-auto lg:mx-0" style={{
+                textAlign: 'justify',
+                textJustify: 'inter-word',
+                hyphens: 'auto',
+                wordSpacing: 'normal'
+              }}>
                 Learning Needs offers variety of boutique services, tailored to each client&lsquo;s need. Our specialized expertise allows the Individual, Institution, Schools, and Organizations to achieve their objectives.
               </p>
             </div>

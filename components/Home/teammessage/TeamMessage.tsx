@@ -67,15 +67,25 @@ const TeamMessage = () => {
                             </span>
                         </h1>
 
-                        <div className="space-y-4 sm:space-y-5 md:space-y-6">
-                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg">
+                        <div className="space-y-4 sm:space-y-5 md:space-y-6" >
+                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                                 We share an enthusiasm for the kind of great learning made possible
                                 by skillful and committed training. Specializing in school startup
                                 and development projects, we work as a team to provide a full range
                                 of personalized advice and training to our clients.
                             </p>
 
-                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg">
+                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                                 Our team is fluent in the languages of strategy, business performance,
                                 leadership, and interpersonal dynamics. We have worked extensively
                                 with large and small organizations and schools, both as leaders and
@@ -83,7 +93,12 @@ const TeamMessage = () => {
                                 structure, amplify execution, and catalyze change.
                             </p>
 
-                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg">
+                            <p className="text-blue-50/90 leading-relaxed text-sm sm:text-base md:text-lg" style={{
+                            textAlign: 'justify',
+                            textJustify: 'inter-word',
+                            hyphens: 'auto',
+                            wordSpacing: 'normal'
+                        }}>
                                 Our job is to mobilize our clients&lsquo; internal capacities to create change that is
                                 lasting and meaningful. <span className="text-yellow-200 font-semibold">With all the best wishes!</span>
                             </p>
