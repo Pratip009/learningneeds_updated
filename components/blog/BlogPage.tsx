@@ -1,54 +1,24 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Clock, Calendar, TrendingUp } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface Blog {
-    id: number;
+    id: string;
     user_image: string;
     username: string;
+    author_name: string;
+    author_image: string;
     title: string;
+    slug: string;
     long_description: string;
     reaction: number;
     cover_image: string;
-    created_at?: string;
+    created_at: string;
 }
-
-// Dummy data
-const dummyBlogs: Blog[] = [
-    {
-        id: 1,
-        user_image: "/images/blog/dp.jpg",
-        username: "Pratip Kayal",
-        title: "The Future of Web Development: Trends to Watch in 2025",
-        long_description: "Explore the cutting-edge technologies and frameworks that are reshaping how we build web applications. From AI-powered development tools to revolutionary new JavaScript frameworks, discover what's next in the world of web development.",
-        reaction: 1247,
-        cover_image: "/images/blog/b1.jpg",
-        created_at: "2024-11-28T10:30:00Z"
-    },
-    {
-        id: 2,
-        user_image: "/images/blog/dp.jpg",
-        username: "Pratip Kayal",
-        title: "Building Scalable Applications with Modern Architecture",
-        long_description: "Learn how to design and implement microservices architecture that can handle millions of users. This comprehensive guide covers everything from containerization to load balancing and auto-scaling strategies.",
-        reaction: 892,
-        cover_image: "/images/blog/b2.jpg",
-        created_at: "2024-11-25T14:20:00Z"
-    },
-    {
-        id: 3,
-        user_image: "/images/blog/dp.jpg",
-        username: "Pratip Kayal",
-        title: "Mastering TypeScript: Advanced Patterns and Best Practices",
-        long_description: "Dive deep into TypeScript's advanced features including conditional types, mapped types, and template literal types. Learn how to write type-safe code that scales with your application.",
-        reaction: 2103,
-        cover_image: "/images/blog/b3.jpg",
-        created_at: "2024-11-20T09:15:00Z"
-    }
-];
 
 const BlogCard = ({ blog }: { blog: Blog }) => {
     const [isLiked, setIsLiked] = useState(false);
@@ -67,7 +37,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
     };
 
     // Helper function to format date
-    const formatDate = (dateString?: string): string => {
+    const formatDate = (dateString: string): string => {
         if (!dateString) return 'Recently';
         const date = new Date(dateString);
         const now = new Date();
@@ -95,26 +65,45 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
         return `${readTime} min read`;
     };
 
-    const handleLike = (e: React.MouseEvent) => {
+    const handleLike = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+        
+        const newLikeCount = isLiked ? likeCount - 1 : likeCount + 1;
         setIsLiked(!isLiked);
-        setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+        setLikeCount(newLikeCount);
+
+        // Update in database
+        try {
+            await supabase
+                .from('blogs')
+                .update({ reaction: newLikeCount })
+                .eq('id', blog.id);
+        } catch (error) {
+            console.error('Error updating reaction:', error);
+            // Revert on error
+            setIsLiked(isLiked);
+            setLikeCount(likeCount);
+        }
     };
 
     return (
-        <Link href={`/blog/${blog.id}`}>
+        <Link href={`/blog/${blog.slug}`}>
             <article className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer">
                 {/* Cover Image with Overlay */}
                 <div className="relative h-56 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
-                    <Image
-                        src={blog.cover_image}
-                        alt={blog.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    />
+                    {blog.cover_image ? (
+                        <Image
+                            src={blog.cover_image}
+                            alt={blog.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-lime-500" />
+                    )}
 
                     {/* Floating Stats Badge */}
                     <div className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-full shadow-lg">
@@ -129,15 +118,17 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                     <div className="flex items-center gap-3 mb-4">
                         <div className="relative w-10 h-10 rounded-full ring-2 ring-emerald-500/20 overflow-hidden">
                             <Image
-                                src={blog.user_image}
-                                alt={blog.username}
+                                src={blog.author_image || blog.user_image}
+                                alt={blog.author_name || blog.username}
                                 fill
                                 sizes="40px"
                                 className="object-cover"
                             />
                         </div>
                         <div className="flex-1">
-                            <p className="font-semibold text-gray-900 text-sm">{blog.username}</p>
+                            <p className="font-semibold text-gray-900 text-sm">
+                                {blog.author_name || blog.username}
+                            </p>
                             <div className="flex items-center gap-3 text-xs text-gray-500">
                                 <span className="flex items-center gap-1">
                                     <Calendar className="w-3 h-3" />
@@ -192,6 +183,54 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 
 // Main Component
 const BlogGrid = () => {
+    const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+
+    const fetchBlogs = async () => {
+        try {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('blogs')
+                .select('*')
+                .eq('published', true)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            setBlogs(data || []);
+        } catch (error) {
+            console.error('Error fetching blogs:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-lime-50/30 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-emerald-500 mx-auto mb-4"></div>
+                    <p className="text-xl text-gray-600">Loading articles...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (blogs.length === 0) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-lime-50/30 flex items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-4">No articles yet</h2>
+                    <p className="text-xl text-gray-600">Check back soon for new content!</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-lime-50/30 py-16 px-4">
             {/* Hero Section */}
@@ -206,7 +245,7 @@ const BlogGrid = () => {
 
             {/* Blog Grid */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {dummyBlogs.map((blog) => (
+                {blogs.map((blog) => (
                     <BlogCard key={blog.id} blog={blog} />
                 ))}
             </div>

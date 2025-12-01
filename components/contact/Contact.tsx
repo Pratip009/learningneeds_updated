@@ -18,23 +18,53 @@ const Contact = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError('');
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-        // Success
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setFormData({ name: '', email: '', contact: '', message: '' });
-        setIsSubmitting(false);
+            // Check if response has content before parsing
+            const contentType = response.headers.get('content-type');
 
-        console.log('Form submitted:', formData);
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server returned non-JSON response');
+            }
+
+            const text = await response.text();
+
+            if (!text) {
+                throw new Error('Server returned empty response');
+            }
+
+            const data = JSON.parse(text);
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to submit form');
+            }
+
+            // Success
+            setSubmitted(true);
+            setTimeout(() => setSubmitted(false), 5000);
+            setFormData({ name: '', email: '', contact: '', message: '' });
+        } catch (err) {
+            console.error('Form submission error:', err);
+            setError(err instanceof Error ? err.message : 'Something went wrong');
+            setTimeout(() => setError(''), 5000);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
-
     const contactInfo = [
         {
             icon: (
@@ -44,7 +74,7 @@ const Contact = () => {
                 </svg>
             ),
             title: 'Our Address',
-            details: ['Kolkata ,West Bengal ,India']
+            details: ['Kolkata, West Bengal, India']
         },
         {
             icon: (
@@ -76,7 +106,6 @@ const Contact = () => {
     ];
 
     return (
-        
         <main className="min-h-screen bg-gray-200 overflow-x-hidden">
             {/* Hero Section */}
             <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 py-16 sm:py-24 overflow-hidden">
@@ -129,6 +158,29 @@ const Contact = () => {
                                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">Send us a Message</h2>
                                 <p className="text-gray-600 text-sm sm:text-base">Fill out the form below and we'll get back to you within 24 hours.</p>
                             </div>
+
+                            {/* Success/Error Messages */}
+                            {submitted && (
+                                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+                                    <p className="text-green-800 text-sm sm:text-base flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        Thank you! Your message has been sent successfully.
+                                    </p>
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                                    <p className="text-red-800 text-sm sm:text-base flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
+                                        {error}
+                                    </p>
+                                </div>
+                            )}
 
                             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
@@ -218,13 +270,6 @@ const Contact = () => {
                                             <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                             Sending...
                                         </>
-                                    ) : submitted ? (
-                                        <>
-                                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            Message Sent!
-                                        </>
                                     ) : (
                                         <>
                                             Send Message
@@ -245,13 +290,14 @@ const Contact = () => {
                                 <div className="rounded-xl sm:rounded-2xl overflow-hidden">
                                     <iframe
                                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106716.17935335953!2d88.26495057337593!3d22.535564936984567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882db4908f667%3A0x43e330e68f6c2cbc!2sKolkata%2C%20West%20Bengal!5e1!3m2!1sen!2sin!4v1764484000862!5m2!1sen!2sin"
-                                        className="w-full grayscale hover:grayscale-0 transition-all duration-500 sm:h-[400px]"
+                                        className="w-full h-64 sm:h-[400px] grayscale hover:grayscale-0 transition-all duration-500"
+                                        loading="lazy"
                                     />
                                 </div>
                             </div>
 
                             {/* Social Links */}
-                            <div className="bg-linear-to-br from-gray-900 to-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white">
+                            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white">
                                 <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">Connect With Us</h3>
                                 <p className="text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base">Follow us on social media for updates and news.</p>
                                 <div className="flex gap-3 sm:gap-4">

@@ -1,28 +1,40 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { productData } from '@/data/data';
-import { ShoppingCart, Heart, Share2, Truck, Shield, RefreshCw, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Heart, Share2, Truck, Shield, RefreshCw, ChevronRight, Loader2, AlertCircle, Download } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import Image from 'next/image';
 import { useAppDispatch } from '@/store/hooks';
 import { addToCart } from '@/store/slices/cartSlice';
 
+interface Product {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    original_price: number;
+    discount_price: number | null;
+    available: boolean;
+    stock_quantity: number | null;
+    product_images?: Array<{
+        id: string;
+        image_url: string;
+        display_order: number;
+    }>;
+    pdf_url?: string | null;
+}
+
 export default function ProductDetailsPage() {
     const params = useParams();
-    const productId = parseInt(params.id as string);
     const dispatch = useAppDispatch();
+    const productId = params.id as string;
 
-    const product = productData.find(p => p.id === productId);
-
-    if (!product) {
-        return <div className="min-h-screen flex items-center justify-center">
-            <p className="text-xl text-gray-600">Product not found</p>
-        </div>;
-    }
-
+    const [product, setProduct] = useState<Product | null>(null);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isWishlisted, setIsWishlisted] = useState(false);
@@ -39,11 +51,51 @@ export default function ProductDetailsPage() {
         date: string;
     }>>([]);
 
-    const productImages = [product.image, product.image, product.image, product.image];
+    useEffect(() => {
+        if (productId) {
+            fetchProduct(productId);
+        }
+    }, [productId]);
 
-    const relatedProducts = productData
-        .filter(p => p.category === product.category && p.id !== product.id)
-        .slice(0, 4);
+    const fetchProduct = async (id: string) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`/api/products?productId=${id}`);
+            const result = await response.json();
+
+            if (result.success && result.data.length > 0) {
+                const fetchedProduct = result.data[0];
+                setProduct(fetchedProduct);
+                
+                // Fetch related products from same category
+                if (fetchedProduct.category) {
+                    fetchRelatedProducts(fetchedProduct.category, id);
+                }
+            } else {
+                setError('Product not found');
+            }
+        } catch (err) {
+            console.error('Error fetching product:', err);
+            setError('Error loading product');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchRelatedProducts = async (category: string, excludeId: string) => {
+        try {
+            const response = await fetch(`/api/products?category=${category}&available=true&limit=4`);
+            const result = await response.json();
+
+            if (result.success) {
+                const filtered = result.data.filter((p: Product) => p.id !== excludeId);
+                setRelatedProducts(filtered.slice(0, 4));
+            }
+        } catch (err) {
+            console.error('Error fetching related products:', err);
+        }
+    };
 
     const handleSubmitReview = () => {
         if (userRating > 0 && reviewText.trim() && reviewName.trim()) {
@@ -67,33 +119,81 @@ export default function ProductDetailsPage() {
     };
 
     const handleAddToCart = () => {
-        if (product.available) {
+        if (product && product.available) {
+            const displayPrice = product.discount_price || product.original_price;
+            const mainImage = product.product_images?.[0]?.image_url || '/placeholder-product.jpg';
+            
             dispatch(addToCart({
-                id: product.id,
+                id: parseInt(product.id) || 0,
                 title: product.title,
-                image: product.image,
-                discountPrice: product.discountPrice,
-                originalPrice: product.originalPrice,
+                image: mainImage,
+                discountPrice: displayPrice,
+                originalPrice: product.original_price,
                 quantity: quantity,
                 category: product.category
             }));
             
-            // Show success message
             alert(`Added ${quantity} ${quantity === 1 ? 'item' : 'items'} to cart!`);
-            
-            // Reset quantity to 1 after adding to cart
             setQuantity(1);
         }
     };
 
     const getCategoryBadgeStyle = (category: string) => {
         const styles: Record<string, string> = {
-            book: 'bg-green-600 text-white',
-            pdf: 'bg-blue-600 text-white',
-            'learning aid': 'bg-purple-600 text-white',
+            'Book': 'bg-blue-600 text-white',
+            'PDF': 'bg-green-600 text-white',
+            'Learning Aid': 'bg-purple-600 text-white',
         };
-        return styles[category.toLowerCase()] || 'bg-gray-600 text-white';
+        return styles[category] || 'bg-gray-600 text-white';
     };
+
+    // Loading State
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                    <Loader2 className="w-12 h-12 animate-spin mx-auto text-gray-900" />
+                    <p className="mt-4 text-gray-600 text-lg">Loading product...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error State
+    if (error || !product) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+                        <div className="flex items-center gap-3 text-red-800 justify-center">
+                            <AlertCircle className="w-6 h-6" />
+                            <p className="font-semibold">{error || 'Product not found'}</p>
+                        </div>
+                        <button
+                            onClick={() => window.location.href = '/products'}
+                            className="mt-4 w-full px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+                        >
+                            Back to Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const displayPrice = product.discount_price || product.original_price;
+    const hasDiscount = product.discount_price && product.discount_price < product.original_price;
+    const discountPercent = hasDiscount && product.discount_price
+        ? Math.round(((product.original_price - product.discount_price) / product.original_price) * 100)
+        : 0;
+
+    const sortedImages = product.product_images?.sort((a, b) => a.display_order - b.display_order) || [];
+    const productImages = sortedImages.length > 0 
+        ? sortedImages.map(img => img.image_url)
+        : ['/placeholder-product.jpg'];
+
+    const isPDF = product.category === 'PDF';
+    const canAddToCart = product.available && (isPDF || (product.stock_quantity && product.stock_quantity > 0));
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -106,6 +206,12 @@ export default function ProductDetailsPage() {
                     <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
                         {product.description}
                     </p>
+                    {isPDF && (
+                        <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold">
+                            <Download className="w-5 h-5" />
+                            Digital Product - Instant Download
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -113,9 +219,9 @@ export default function ProductDetailsPage() {
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span className="hover:text-gray-900 cursor-pointer transition-colors">Home</span>
+                        <span onClick={() => window.location.href = '/'} className="hover:text-gray-900 cursor-pointer transition-colors">Home</span>
                         <ChevronRight className="w-4 h-4" />
-                        <span className="hover:text-gray-900 cursor-pointer transition-colors">Products</span>
+                        <span onClick={() => window.location.href = '/products'} className="hover:text-gray-900 cursor-pointer transition-colors">Products</span>
                         <ChevronRight className="w-4 h-4" />
                         <span className="text-gray-900 font-medium">{product.title}</span>
                     </div>
@@ -142,22 +248,29 @@ export default function ProductDetailsPage() {
                             >
                                 <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? 'text-white fill-white' : 'text-gray-700'}`} />
                             </button>
+                            {isPDF && (
+                                <div className="absolute top-4 left-4 px-4 py-2 bg-green-600 text-white rounded-lg font-bold text-sm">
+                                    DIGITAL
+                                </div>
+                            )}
                         </div>
-                        <div className="grid grid-cols-4 gap-3">
-                            {productImages.map((img, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setSelectedImage(idx)}
-                                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 relative ${
-                                        selectedImage === idx 
-                                            ? 'border-gray-900 shadow-md' 
-                                            : 'border-gray-200 hover:border-gray-400'
-                                    }`}
-                                >
-                                    <Image src={img} alt={`View ${idx + 1}`} fill className="object-cover" />
-                                </button>
-                            ))}
-                        </div>
+                        {productImages.length > 1 && (
+                            <div className="grid grid-cols-4 gap-3">
+                                {productImages.map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setSelectedImage(idx)}
+                                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 relative ${
+                                            selectedImage === idx 
+                                                ? 'border-gray-900 shadow-md' 
+                                                : 'border-gray-200 hover:border-gray-400'
+                                        }`}
+                                    >
+                                        <Image src={img} alt={`View ${idx + 1}`} fill className="object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Product Info */}
@@ -173,13 +286,11 @@ export default function ProductDetailsPage() {
                                 <div className="flex items-center gap-2">
                                     <div className="flex items-center gap-1">
                                         {[...Array(5)].map((_, i) => (
-                                            <FaStar
-                                                key={i}
-                                                className={`w-4 h-4 ${i < Math.floor(product.reviews) ? 'text-yellow-500' : 'text-gray-300'}`}
-                                            />
+                                            <FaStar key={i} className="w-4 h-4 text-yellow-500" />
                                         ))}
                                     </div>
-                                    <span className="font-semibold text-gray-900">{product.reviews}</span>
+                                    <span className="font-semibold text-gray-900">5.0</span>
+                                    <span className="text-gray-500 text-sm">(Reviews coming soon)</span>
                                 </div>
                             </div>
                             <p className="text-gray-600 leading-relaxed">
@@ -191,55 +302,85 @@ export default function ProductDetailsPage() {
                         <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                             <div className="flex items-baseline gap-4 flex-wrap">
                                 <span className="text-4xl font-bold text-gray-900">
-                                    ₹{product.discountPrice}
+                                    ₹{displayPrice}
                                 </span>
-                                <span className="text-xl text-gray-400 line-through">₹{product.originalPrice}</span>
-                                <span className="px-3 py-1 bg-gray-900 text-white rounded-lg text-sm font-semibold">
-                                    {Math.round(((product.originalPrice - product.discountPrice) / product.originalPrice) * 100)}% OFF
-                                </span>
+                                {hasDiscount && (
+                                    <>
+                                        <span className="text-xl text-gray-400 line-through">₹{product.original_price}</span>
+                                        <span className="px-3 py-1 bg-gray-900 text-white rounded-lg text-sm font-semibold">
+                                            {discountPercent}% OFF
+                                        </span>
+                                    </>
+                                )}
                             </div>
+                        </div>
+
+                        {/* Stock Status */}
+                        <div className="flex items-center gap-3">
+                            {isPDF ? (
+                                <span className="px-4 py-2 bg-green-100 text-green-700 rounded-lg font-semibold text-sm flex items-center gap-2">
+                                    <Download className="w-4 h-4" />
+                                    Instant Digital Download
+                                </span>
+                            ) : (
+                                <>
+                                    <span className={`px-4 py-2 rounded-lg font-semibold text-sm ${
+                                        product.available && product.stock_quantity && product.stock_quantity > 0
+                                            ? 'bg-green-100 text-green-700' 
+                                            : 'bg-red-100 text-red-700'
+                                    }`}>
+                                        {product.available && product.stock_quantity && product.stock_quantity > 0
+                                            ? `✓ In Stock (${product.stock_quantity} available)` 
+                                            : '✗ Out of Stock'}
+                                    </span>
+                                </>
+                            )}
                         </div>
 
                         {/* Quantity & Actions */}
                         <div className="space-y-5">
-                            <div className="flex items-center gap-4 flex-wrap">
-                                <span className="text-gray-900 font-semibold">Quantity:</span>
-                                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                    <button
-                                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                        className="px-4 py-2 hover:bg-gray-100 transition-colors font-semibold"
-                                    >
-                                        -
-                                    </button>
-                                    <span className="px-6 py-2 border-x border-gray-300 font-semibold">{quantity}</span>
-                                    <button
-                                        onClick={() => setQuantity(quantity + 1)}
-                                        className="px-4 py-2 hover:bg-gray-100 transition-colors font-semibold"
-                                    >
-                                        +
-                                    </button>
+                            {!isPDF && canAddToCart && (
+                                <div className="flex items-center gap-4 flex-wrap">
+                                    <span className="text-gray-900 font-semibold">Quantity:</span>
+                                    <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                        <button
+                                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                            className="px-4 py-2 hover:bg-gray-100 transition-colors font-semibold"
+                                        >
+                                            -
+                                        </button>
+                                        <span className="px-6 py-2 border-x border-gray-300 font-semibold">{quantity}</span>
+                                        <button
+                                            onClick={() => setQuantity(Math.min(product.stock_quantity || 1, quantity + 1))}
+                                            className="px-4 py-2 hover:bg-gray-100 transition-colors font-semibold"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
                                 </div>
-                                <span className={`px-3 py-1 rounded-lg font-semibold text-sm ${
-                                    product.available 
-                                        ? 'bg-green-100 text-green-700' 
-                                        : 'bg-red-100 text-red-700'
-                                }`}>
-                                    {product.available ? '✓ In Stock' : '✗ Out of Stock'}
-                                </span>
-                            </div>
+                            )}
 
                             <div className="flex gap-4">
                                 <button 
                                     onClick={handleAddToCart}
-                                    disabled={!product.available}
+                                    disabled={!canAddToCart}
                                     className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-lg font-semibold transition-colors ${
-                                        product.available 
+                                        canAddToCart
                                             ? 'bg-gray-900 text-white hover:bg-gray-800' 
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                     }`}
                                 >
-                                    <ShoppingCart className="w-5 h-5" />
-                                    {product.available ? 'Add to Cart' : 'Out of Stock'}
+                                    {isPDF ? (
+                                        <>
+                                            <Download className="w-5 h-5" />
+                                            Buy & Download
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ShoppingCart className="w-5 h-5" />
+                                            {canAddToCart ? 'Add to Cart' : 'Out of Stock'}
+                                        </>
+                                    )}
                                 </button>
                                 <button className="px-5 py-3 border border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all">
                                     <Share2 className="w-5 h-5 text-gray-700" />
@@ -249,15 +390,17 @@ export default function ProductDetailsPage() {
 
                         {/* Shipping Info */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                <div className="p-2 bg-blue-100 rounded-lg">
-                                    <Truck className="w-5 h-5 text-blue-600" />
+                            {!isPDF && (
+                                <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                        <Truck className="w-5 h-5 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-gray-900 text-sm">Free Delivery</p>
+                                        <p className="text-xs text-gray-600">Orders over ₹500</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-sm">Free Delivery</p>
-                                    <p className="text-xs text-gray-600">Orders over ₹500</p>
-                                </div>
-                            </div>
+                            )}
                             <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-200">
                                 <div className="p-2 bg-green-100 rounded-lg">
                                     <Shield className="w-5 h-5 text-green-600" />
@@ -267,15 +410,17 @@ export default function ProductDetailsPage() {
                                     <p className="text-xs text-gray-600">100% secure</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                                <div className="p-2 bg-purple-100 rounded-lg">
-                                    <RefreshCw className="w-5 h-5 text-purple-600" />
+                            {!isPDF && (
+                                <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                                    <div className="p-2 bg-purple-100 rounded-lg">
+                                        <RefreshCw className="w-5 h-5 text-purple-600" />
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-gray-900 text-sm">Easy Returns</p>
+                                        <p className="text-xs text-gray-600">30 day return</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-sm">Easy Returns</p>
-                                    <p className="text-xs text-gray-600">30 day return</p>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -400,30 +545,32 @@ export default function ProductDetailsPage() {
                     <div>
                         <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Products</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {relatedProducts.map((item) => (
-                                <div
-                                    key={item.id}
-                                    onClick={() => window.location.href = `/products/${item.id}`}
-                                    className="group bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-200"
-                                >
-                                    <div className="aspect-square bg-gray-100 relative overflow-hidden">
-                                        <Image src={item.image} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
-                                    </div>
-                                    <div className="p-4">
-                                        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-1">{item.title}</h3>
-                                        <div className="flex items-center gap-1 mb-3">
-                                            {[...Array(5)].map((_, i) => (
-                                                <FaStar
-                                                    key={i}
-                                                    className={`w-3 h-3 ${i < Math.floor(item.reviews) ? 'text-yellow-500' : 'text-gray-300'}`}
-                                                />
-                                            ))}
-                                            <span className="text-xs text-gray-600 ml-1 font-medium">({item.reviews})</span>
+                            {relatedProducts.map((item) => {
+                                const itemPrice = item.discount_price || item.original_price;
+                                const itemImage = item.product_images?.[0]?.image_url || '/placeholder-product.jpg';
+                                
+                                return (
+                                    <div
+                                        key={item.id}
+                                        onClick={() => window.location.href = `/products/${item.id}`}
+                                        className="group bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-200"
+                                    >
+                                        <div className="aspect-square bg-gray-100 relative overflow-hidden">
+                                            <Image src={itemImage} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
                                         </div>
-                                        <p className="text-lg font-bold text-gray-900">₹{item.discountPrice}</p>
+                                        <div className="p-4">
+                                            <h3 className="font-semibold text-gray-900 mb-2 line-clamp-1">{item.title}</h3>
+                                            <div className="flex items-center gap-1 mb-3">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <FaStar key={i} className="w-3 h-3 text-yellow-500" />
+                                                ))}
+                                                <span className="text-xs text-gray-600 ml-1 font-medium">(5.0)</span>
+                                            </div>
+                                            <p className="text-lg font-bold text-gray-900">₹{itemPrice}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 )}

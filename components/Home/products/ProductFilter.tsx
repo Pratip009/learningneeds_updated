@@ -1,19 +1,62 @@
 'use client'
 
-import React, { useState } from 'react';
-import { Filter, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Filter, ChevronDown, Loader2, AlertCircle } from 'lucide-react';
 import { FaStar } from 'react-icons/fa';
 import ProductCard from './ProductCard';
-import { productData } from '@/data/data';
+
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  original_price: number;
+  discount_price: number | null;
+  available: boolean;
+  stock_quantity: number | null;
+  product_images?: Array<{
+    id: string;
+    image_url: string;
+    display_order: number;
+  }>;
+  pdf_url?: string | null;
+}
 
 export default function ProductFilter() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 15000]);
   const [selectedRating, setSelectedRating] = useState<number>(0);
 
-  // Extract unique categories from product data
-  const categories = Array.from(new Set(productData.map(p => p.category)));
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/products?available=true');
+      const result = await response.json();
+
+      if (result.success) {
+        setProducts(result.data);
+      } else {
+        setError('Failed to load products');
+      }
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      setError('Error loading products');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Extract unique categories from fetched products
+  const categories = Array.from(new Set(products.map(p => p.category)));
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev =>
@@ -29,12 +72,51 @@ export default function ProductFilter() {
     setSelectedRating(0);
   };
 
-  const filteredProducts = productData.filter(product => {
+  const filteredProducts = products.filter(product => {
+    // Get display price (discount price if available, otherwise original price)
+    const displayPrice = product.discount_price || product.original_price;
+    
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-    const priceMatch = product.discountPrice >= priceRange[0] && product.discountPrice <= priceRange[1];
-    const ratingMatch = product.reviews >= selectedRating;
+    const priceMatch = displayPrice >= priceRange[0] && displayPrice <= priceRange[1];
+    // Rating filter - placeholder (you can add a reviews field later)
+    const ratingMatch = selectedRating === 0; // For now, show all products when rating filter is active
+    
     return categoryMatch && priceMatch && ratingMatch;
   });
+
+  // Loading State
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white p-4 sm:p-6 md:p-10">
+        <div className="flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-12 h-12 animate-spin text-rose-600" />
+          <p className="mt-4 text-gray-600 text-lg">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error State
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white p-4 sm:p-6 md:p-10">
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
+            <div className="flex items-center gap-3 text-red-800">
+              <AlertCircle className="w-6 h-6" />
+              <p className="font-semibold">{error}</p>
+            </div>
+            <button
+              onClick={fetchProducts}
+              className="mt-4 w-full px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white p-4 sm:p-6 md:p-10">
@@ -85,19 +167,23 @@ export default function ProductFilter() {
                   <ChevronDown className="w-4 h-4" />
                 </h3>
                 <div className="space-y-3">
-                  {categories.map(category => (
-                    <label key={category} className="flex items-center gap-3 cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCategoryToggle(category)}
-                        className="w-4 h-4 rounded border-gray-300 text-rose-600 focus:ring-rose-500"
-                      />
-                      <span className="text-gray-700 group-hover:text-rose-600 transition-colors">
-                        {category}
-                      </span>
-                    </label>
-                  ))}
+                  {categories.length > 0 ? (
+                    categories.map(category => (
+                      <label key={category} className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => handleCategoryToggle(category)}
+                          className="w-4 h-4 rounded border-gray-300 text-rose-600 focus:ring-rose-500"
+                        />
+                        <span className="text-gray-700 group-hover:text-rose-600 transition-colors">
+                          {category}
+                        </span>
+                      </label>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-500">No categories available</p>
+                  )}
                 </div>
               </div>
 
@@ -181,6 +267,40 @@ export default function ProductFilter() {
                   </label>
                 </div>
               </div>
+
+              {/* Active Filters Display */}
+              {(selectedCategories.length > 0 || priceRange[0] > 0 || priceRange[1] < 15000) && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Active Filters:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedCategories.map(cat => (
+                      <span
+                        key={cat}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm"
+                      >
+                        {cat}
+                        <button
+                          onClick={() => handleCategoryToggle(cat)}
+                          className="hover:text-rose-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                    {(priceRange[0] > 0 || priceRange[1] < 15000) && (
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-sm">
+                        ₹{priceRange[0]} - ₹{priceRange[1]}
+                        <button
+                          onClick={() => setPriceRange([0, 15000])}
+                          className="hover:text-rose-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -194,13 +314,17 @@ export default function ProductFilter() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg mb-4">No products found matching your filters.</p>
-                <button
-                  onClick={clearFilters}
-                  className="px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium"
-                >
-                  Clear Filters
-                </button>
+                <div className="inline-block p-6 bg-gray-50 rounded-lg">
+                  <Filter className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-gray-500 text-lg mb-2">No products found matching your filters.</p>
+                  <p className="text-gray-400 text-sm mb-4">Try adjusting your filter criteria</p>
+                  <button
+                    onClick={clearFilters}
+                    className="px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
               </div>
             )}
           </div>

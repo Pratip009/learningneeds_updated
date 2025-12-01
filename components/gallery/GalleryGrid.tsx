@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/immutability */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
@@ -8,29 +8,13 @@ import { X, ChevronLeft, ChevronRight, Expand } from "lucide-react";
 
 interface GalleryItem {
     id: string;
-    image: string;
-    name: string;
+    image_url: string;
     category: 'training' | 'school';
+    created_at: string;
 }
 
 const GalleryGrid: React.FC = () => {
-    // Sample gallery data with categories
-    const sampleGalleryData: GalleryItem[] = [
-        { id: '1', image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&q=80', name: 'Training 1', category: 'training' },
-        { id: '2', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80', name: 'School 1', category: 'school' },
-        { id: '3', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80', name: 'Training 2', category: 'training' },
-        { id: '4', image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80', name: 'School 2', category: 'school' },
-        { id: '5', image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80', name: 'Training 3', category: 'training' },
-        { id: '6', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80', name: 'School 3', category: 'school' },
-        { id: '7', image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&q=80', name: 'Training 4', category: 'training' },
-        { id: '8', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80', name: 'School 4', category: 'school' },
-        { id: '9', image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80', name: 'Training 5', category: 'training' },
-        { id: '10', image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80', name: 'School 5', category: 'school' },
-        { id: '11', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80', name: 'Training 6', category: 'training' },
-        { id: '12', image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&q=80', name: 'School 6', category: 'school' },
-    ];
-
-    const [galleryData] = useState<GalleryItem[]>(sampleGalleryData);
+    const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
     const [activeCategory, setActiveCategory] = useState<'all' | 'training' | 'school'>('all');
     const [displayedItems, setDisplayedItems] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -42,6 +26,29 @@ const GalleryGrid: React.FC = () => {
     const lastItemRef = useRef<HTMLDivElement | null>(null);
 
     const ITEMS_PER_PAGE = 12;
+
+    // Fetch gallery data from API
+    useEffect(() => {
+        const fetchGallery = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('/api/gallery');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setGalleryData(data.images || []);
+                } else {
+                    console.error('Failed to fetch gallery');
+                }
+            } catch (error) {
+                console.error('Error fetching gallery:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchGallery();
+    }, []);
 
     // Get filtered data based on active category
     const getFilteredData = useCallback(() => {
@@ -55,7 +62,6 @@ const GalleryGrid: React.FC = () => {
 
     useEffect(() => {
         // Reset and load initial items when category changes
-        setLoading(true);
         setDisplayedItems([]);
         setPage(0);
         
@@ -63,7 +69,6 @@ const GalleryGrid: React.FC = () => {
             const filtered = getFilteredData();
             setDisplayedItems(filtered.slice(0, ITEMS_PER_PAGE));
             setPage(1);
-            setLoading(false);
         }, 300);
     }, [activeCategory, getFilteredData]);
 
@@ -164,9 +169,83 @@ const GalleryGrid: React.FC = () => {
         );
     }
 
+    if (galleryData.length === 0) {
+        return (
+            <div className="max-w-7xl mx-auto px-4 py-10">
+                <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+                    <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                        <Expand className="w-10 h-10 text-gray-400" />
+                    </div>
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-2">No Images Yet</h3>
+                    <p className="text-gray-600">Gallery is empty. Images will appear here once uploaded.</p>
+                </div>
+            </div>
+        );
+    }
+
     if (filteredData.length === 0) {
         return (
             <div className="max-w-7xl mx-auto px-4 py-10">
+                {/* Category Filter Tabs */}
+                <div className="mb-10">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Filter by Category</h2>
+                    <div className="flex flex-wrap gap-4 items-center justify-center">
+                        <button
+                            onClick={() => setActiveCategory('all')}
+                            className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+                                activeCategory === 'all'
+                                    ? 'bg-blue-600 text-white shadow-xl shadow-blue-600/40 scale-110'
+                                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md border-2 border-gray-200'
+                            }`}
+                        >
+                            All Images
+                            <span className={`ml-2 px-3 py-1 rounded-full text-sm font-bold ${
+                                activeCategory === 'all' 
+                                    ? 'bg-white/30' 
+                                    : 'bg-blue-100 text-blue-600'
+                            }`}>
+                                {getCategoryCount('all')}
+                            </span>
+                        </button>
+                        
+                        <button
+                            onClick={() => setActiveCategory('training')}
+                            className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+                                activeCategory === 'training'
+                                    ? 'bg-purple-600 text-white shadow-xl shadow-purple-600/40 scale-110'
+                                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md border-2 border-gray-200'
+                            }`}
+                        >
+                            Training
+                            <span className={`ml-2 px-3 py-1 rounded-full text-sm font-bold ${
+                                activeCategory === 'training' 
+                                    ? 'bg-white/30' 
+                                    : 'bg-purple-100 text-purple-600'
+                            }`}>
+                                {getCategoryCount('training')}
+                            </span>
+                        </button>
+                        
+                        <button
+                            onClick={() => setActiveCategory('school')}
+                            className={`px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+                                activeCategory === 'school'
+                                    ? 'bg-green-600 text-white shadow-xl shadow-green-600/40 scale-110'
+                                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md border-2 border-gray-200'
+                            }`}
+                        >
+                            School
+                            <span className={`ml-2 px-3 py-1 rounded-full text-sm font-bold ${
+                                activeCategory === 'school' 
+                                    ? 'bg-white/30' 
+                                    : 'bg-green-100 text-green-600'
+                            }`}>
+                                {getCategoryCount('school')}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
                 <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
                     <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
                         <Expand className="w-10 h-10 text-gray-400" />
@@ -263,8 +342,8 @@ const GalleryGrid: React.FC = () => {
 
                                 {/* Image with lazy loading */}
                                 <Image
-                                    src={item.image}
-                                    alt={item.name}
+                                    src={item.image_url}
+                                    alt={`${item.category} image`}
                                     fill
                                     loading="lazy"
                                     onLoad={() =>
@@ -360,8 +439,8 @@ const GalleryGrid: React.FC = () => {
                         style={{ animation: "scaleIn 0.3s ease-out" }}
                     >
                         <Image
-                            src={selected.image}
-                            alt={selected.name}
+                            src={selected.image_url}
+                            alt={`${selected.category} image`}
                             fill
                             className="object-contain"
                             sizes="100vw"

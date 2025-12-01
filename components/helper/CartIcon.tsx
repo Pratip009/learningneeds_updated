@@ -26,8 +26,18 @@ export default function CartIcon() {
 
   const handleCheckout = () => {
     setIsOpen(false);
-    router.push('/checkout');
+    // Navigate to address page first (not directly to checkout)
+    router.push('/address');
   };
+
+  const handleViewCart = () => {
+    setIsOpen(false);
+    router.push('/cart');
+  };
+
+  // Calculate delivery charge
+  const deliveryCharge = totalPrice > 500 ? 0 : 50;
+  const finalTotal = totalPrice + deliveryCharge;
 
   return (
     <>
@@ -49,7 +59,7 @@ export default function CartIcon() {
         <div className="fixed inset-0 z-[2000] overflow-hidden pointer-events-none">
           {/* Backdrop - Transparent but clickable */}
           <div 
-            className="absolute inset-0 bg-transparent pointer-events-auto"
+            className="absolute inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto"
             onClick={() => setIsOpen(false)}
           />
           
@@ -165,17 +175,30 @@ export default function CartIcon() {
                     <span className="font-semibold text-gray-900">₹{totalPrice}</span>
                   </div>
                   <div className="flex items-center justify-between text-base">
-                    <span className="text-gray-700 font-medium">Shipping</span>
-                    <span className="font-semibold text-green-600">Free</span>
+                    <span className="text-gray-700 font-medium">Delivery</span>
+                    <span className={`font-semibold ${deliveryCharge === 0 ? 'text-green-600' : 'text-gray-900'}`}>
+                      {deliveryCharge === 0 ? 'Free' : `₹${deliveryCharge}`}
+                    </span>
                   </div>
+                  
+                  {/* Free delivery notice */}
+                  {totalPrice < 500 && (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2">
+                      <p className="text-xs text-yellow-700">
+                        Add ₹{500 - totalPrice} more for free delivery!
+                      </p>
+                    </div>
+                  )}
+                  
                   <div className="border-t border-gray-300 pt-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xl font-bold text-gray-900">Total</span>
-                      <span className="text-2xl font-bold text-indigo-800">₹{totalPrice}</span>
+                      <span className="text-2xl font-bold text-indigo-800">₹{finalTotal}</span>
                     </div>
                   </div>
                 </div>
 
+                {/* Checkout Button */}
                 <button
                   onClick={handleCheckout}
                   className="w-full py-3.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02]"
@@ -183,9 +206,17 @@ export default function CartIcon() {
                   Proceed to Checkout
                 </button>
                 
+                {/* View Full Cart Button */}
+                <button
+                  onClick={handleViewCart}
+                  className="w-full py-3 border-2 border-indigo-800 text-indigo-800 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
+                >
+                  View Full Cart
+                </button>
+                
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-full py-3 border-2 border-indigo-800 text-indigo-800 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
+                  className="w-full py-2.5 text-gray-600 hover:text-gray-900 transition-colors font-medium"
                 >
                   Continue Shopping
                 </button>
